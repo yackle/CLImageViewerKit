@@ -7,7 +7,7 @@
 
 #import "CLFullscreenImageViewer.h"
 
-#import "../CLZoomingImageView/CLZoomingImageView.h"
+#import "CLZoomingImageView.h"
 
 
 

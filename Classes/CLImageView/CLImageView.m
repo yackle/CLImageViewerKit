@@ -7,7 +7,7 @@
 
 #import "CLImageView.h"
 
-#import "../CLCacheManager/CLCacheManager.h"
+#import "CLCacheManager.h"
 
 
 

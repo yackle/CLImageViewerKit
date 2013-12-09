@@ -7,7 +7,7 @@
 
 #import "CLImagePagingView.h"
 
-#import "../CLFullscreenImageViewer/CLFullscreenImageViewer.h"
+#import "CLFullscreenImageViewer.h"
 
 @interface CLImagePagingView()
 <CLFullscreenImageViewerDelegate, UIScrollViewDelegate>

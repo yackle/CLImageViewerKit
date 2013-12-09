@@ -7,7 +7,7 @@
 
 #import <UIKit/UIKit.h>
 
-#import "../UIImageView+URLDownload/UIImageView+URLDownload.h"
+#import "UIImageView+URLDownload.h"
 
 
 @interface CLImageView : UIImageView
