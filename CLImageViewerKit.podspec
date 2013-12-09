@@ -31,11 +31,11 @@ Pod::Spec.new do |s|
   end
   s.subspec 'CLFullscreenImageViewer' do |a|
     a.source_files = 'Classes/CLFullscreenImageViewer/*.{h,m}'
-    a.dependency 'CLImageViewer/CLZoomingImageView'
+    a.dependency 'CLImageViewerKit/CLZoomingImageView'
   end
   s.subspec 'CLImagePagingView' do |a|
     a.source_files = 'Classes/CLImagePagingView/*.{h,m}'
-    a.dependency 'CLImageViewer/CLFullscreenImageViewer'
+    a.dependency 'CLImageViewerKit/CLFullscreenImageViewer'
   end
   
   
@@ -44,12 +44,12 @@ Pod::Spec.new do |s|
   end
   s.subspec 'CLCacheManager' do |a|
     a.source_files = 'Classes/CLCacheManager/*.{h,m}'
-    a.dependency 'CLImageViewer/UIImageUtility'
+    a.dependency 'CLImageViewerKit/UIImageUtility'
   end
   s.subspec 'CLImageView' do |a|
     a.source_files = 'Classes/CLImageView/*.{h,m}'
-    a.dependency 'CLImageViewer/UIImageViewURLDownload'
-    a.dependency 'CLImageViewer/CLCacheManager'
+    a.dependency 'CLImageViewerKit/UIImageViewURLDownload'
+    a.dependency 'CLImageViewerKit/CLCacheManager'
   end
   
 end
