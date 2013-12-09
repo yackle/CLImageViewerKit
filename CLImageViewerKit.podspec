@@ -19,6 +19,13 @@ Pod::Spec.new do |s|
   s.subspec 'UIImagePlaceholder' do |a|
     a.source_files = 'Classes/UIImage+Placeholder/*.{h,m}'
   end
+  s.subspec 'UIImageUtility' do |a|
+    a.source_files = 'Classes/UIImage+Utility/*.{h,m}'
+  end
+  s.subspec 'UIViewFrame' do |a|
+    a.source_files = 'Classes/UIView+Frame/*.{h,m}'
+  end
+  
   s.subspec 'CLZoomingImageView' do |a|
     a.source_files = 'Classes/CLZoomingImageView/*.{h,m}'
   end
@@ -37,6 +44,7 @@ Pod::Spec.new do |s|
   end
   s.subspec 'CLCacheManager' do |a|
     a.source_files = 'Classes/CLCacheManager/*.{h,m}'
+    a.dependency 'CLImageViewer/UIImageUtility'
   end
   s.subspec 'CLImageView' do |a|
     a.source_files = 'Classes/CLImageView/*.{h,m}'

@@ -8,11 +8,7 @@
 #import "CLCacheManager.h"
 
 #import <CommonCrypto/CommonHMAC.h>
-
-
-@interface UIImage(CLCacheManager)
-+ (UIImage*)fastImageWithData:(NSData *)data;
-@end
+#import "UIImage+Utility.h"
 
 @interface NSString(CLCacheManager)
 - (NSString*)MD5Hash;
@@ -258,31 +254,6 @@ static CLCacheManager *_sharedInstance = nil;
 
 
 #pragma mark- Utility
-
-@implementation UIImage (CLCacheManager)
-
-+ (UIImage*)decode:(UIImage*)image
-{
-    if(image==nil){  return nil; }
-    
-    UIGraphicsBeginImageContext(image.size);
-    {
-        [image drawAtPoint:CGPointMake(0, 0)];
-        image = UIGraphicsGetImageFromCurrentImageContext();
-    }
-    UIGraphicsEndImageContext();
-    
-    return image;
-}
-
-+ (UIImage*)fastImageWithData:(NSData *)data
-{
-    UIImage *image = [UIImage imageWithData:data];
-    return [self decode:image];
-}
-
-@end
-
 
 @implementation NSString (CLCacheManager)
 

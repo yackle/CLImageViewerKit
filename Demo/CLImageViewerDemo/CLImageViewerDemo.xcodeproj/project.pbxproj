@@ -10,6 +10,8 @@
 		AD066F901842EDA5000CDD54 /* UIImageView+URLDownload.m in Sources */ = {isa = PBXBuildFile; fileRef = AD066F8F1842EDA5000CDD54 /* UIImageView+URLDownload.m */; };
 		AD066F9A184356E8000CDD54 /* CLCacheManager.m in Sources */ = {isa = PBXBuildFile; fileRef = AD066F99184356E8000CDD54 /* CLCacheManager.m */; };
 		AD066FA2184375BD000CDD54 /* CLImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = AD066FA1184375BD000CDD54 /* CLImageView.m */; };
+		ADBB8E0218556ADF00B9522F /* UIView+Frame.m in Sources */ = {isa = PBXBuildFile; fileRef = ADBB8E0118556ADF00B9522F /* UIView+Frame.m */; };
+		ADBB8E0618556AE700B9522F /* UIImage+Utility.m in Sources */ = {isa = PBXBuildFile; fileRef = ADBB8E0518556AE700B9522F /* UIImage+Utility.m */; };
 		ADED86F218423C3200CF7EAC /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ADED86F118423C3200CF7EAC /* Foundation.framework */; };
 		ADED86F418423C3200CF7EAC /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ADED86F318423C3200CF7EAC /* CoreGraphics.framework */; };
 		ADED86F618423C3200CF7EAC /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ADED86F518423C3200CF7EAC /* UIKit.framework */; };
@@ -47,6 +49,10 @@
 		AD066F99184356E8000CDD54 /* CLCacheManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CLCacheManager.m; path = CLCacheManager/CLCacheManager.m; sourceTree = "<group>"; };
 		AD066FA0184375BD000CDD54 /* CLImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CLImageView.h; path = CLImageView/CLImageView.h; sourceTree = "<group>"; };
 		AD066FA1184375BD000CDD54 /* CLImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CLImageView.m; path = CLImageView/CLImageView.m; sourceTree = "<group>"; };
+		ADBB8E0018556ADF00B9522F /* UIView+Frame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Frame.h"; sourceTree = "<group>"; };
+		ADBB8E0118556ADF00B9522F /* UIView+Frame.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Frame.m"; sourceTree = "<group>"; };
+		ADBB8E0418556AE700B9522F /* UIImage+Utility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Utility.h"; sourceTree = "<group>"; };
+		ADBB8E0518556AE700B9522F /* UIImage+Utility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Utility.m"; sourceTree = "<group>"; };
 		ADED86EE18423C3200CF7EAC /* CLImageViewerDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CLImageViewerDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		ADED86F118423C3200CF7EAC /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		ADED86F318423C3200CF7EAC /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -127,6 +133,24 @@
 			name = CLImageView;
 			sourceTree = "<group>";
 		};
+		ADBB8DFF18556ADF00B9522F /* UIView+Frame */ = {
+			isa = PBXGroup;
+			children = (
+				ADBB8E0018556ADF00B9522F /* UIView+Frame.h */,
+				ADBB8E0118556ADF00B9522F /* UIView+Frame.m */,
+			);
+			path = "UIView+Frame";
+			sourceTree = "<group>";
+		};
+		ADBB8E0318556AE700B9522F /* UIImage+Utility */ = {
+			isa = PBXGroup;
+			children = (
+				ADBB8E0418556AE700B9522F /* UIImage+Utility.h */,
+				ADBB8E0518556AE700B9522F /* UIImage+Utility.m */,
+			);
+			path = "UIImage+Utility";
+			sourceTree = "<group>";
+		};
 		ADED86E518423C3200CF7EAC = {
 			isa = PBXGroup;
 			children = (
@@ -204,6 +228,8 @@
 		ADFFD35A18423E7C00D1712E /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				ADBB8E0318556AE700B9522F /* UIImage+Utility */,
+				ADBB8DFF18556ADF00B9522F /* UIView+Frame */,
 				AD066F97184356C6000CDD54 /* CLCacheManager */,
 				ADFFD35B18423E7C00D1712E /* CLFullscreenImageViewer */,
 				ADFFD35E18423E7C00D1712E /* CLImagePagingView */,
@@ -353,12 +379,14 @@
 				ADED870218423C3200CF7EAC /* AppDelegate.m in Sources */,
 				ADED86FE18423C3200CF7EAC /* main.m in Sources */,
 				AD066F9A184356E8000CDD54 /* CLCacheManager.m in Sources */,
+				ADBB8E0618556AE700B9522F /* UIImage+Utility.m in Sources */,
 				ADFFD36718423E7C00D1712E /* CLFullscreenImageViewer.m in Sources */,
 				AD066FA2184375BD000CDD54 /* CLImageView.m in Sources */,
 				ADFFD36818423E7C00D1712E /* CLImagePagingView.m in Sources */,
 				ADFFD36A18423E7C00D1712E /* UIImage+Placeholder.m in Sources */,
 				AD066F901842EDA5000CDD54 /* UIImageView+URLDownload.m in Sources */,
 				ADFFD36918423E7C00D1712E /* CLZoomingImageView.m in Sources */,
+				ADBB8E0218556ADF00B9522F /* UIView+Frame.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
