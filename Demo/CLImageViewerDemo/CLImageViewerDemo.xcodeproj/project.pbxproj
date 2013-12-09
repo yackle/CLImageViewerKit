@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		AD066F901842EDA5000CDD54 /* UIImageView+URLDownload.m in Sources */ = {isa = PBXBuildFile; fileRef = AD066F8F1842EDA5000CDD54 /* UIImageView+URLDownload.m */; };
+		AD066F9A184356E8000CDD54 /* CLCacheManager.m in Sources */ = {isa = PBXBuildFile; fileRef = AD066F99184356E8000CDD54 /* CLCacheManager.m */; };
+		AD066FA2184375BD000CDD54 /* CLImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = AD066FA1184375BD000CDD54 /* CLImageView.m */; };
 		ADED86F218423C3200CF7EAC /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ADED86F118423C3200CF7EAC /* Foundation.framework */; };
 		ADED86F418423C3200CF7EAC /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ADED86F318423C3200CF7EAC /* CoreGraphics.framework */; };
 		ADED86F618423C3200CF7EAC /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ADED86F518423C3200CF7EAC /* UIKit.framework */; };
@@ -38,6 +41,12 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		AD066F8E1842EDA5000CDD54 /* UIImageView+URLDownload.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIImageView+URLDownload.h"; path = "UIImageView+URLDownload/UIImageView+URLDownload.h"; sourceTree = "<group>"; };
+		AD066F8F1842EDA5000CDD54 /* UIImageView+URLDownload.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIImageView+URLDownload.m"; path = "UIImageView+URLDownload/UIImageView+URLDownload.m"; sourceTree = "<group>"; };
+		AD066F98184356E8000CDD54 /* CLCacheManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CLCacheManager.h; path = CLCacheManager/CLCacheManager.h; sourceTree = "<group>"; };
+		AD066F99184356E8000CDD54 /* CLCacheManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CLCacheManager.m; path = CLCacheManager/CLCacheManager.m; sourceTree = "<group>"; };
+		AD066FA0184375BD000CDD54 /* CLImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CLImageView.h; path = CLImageView/CLImageView.h; sourceTree = "<group>"; };
+		AD066FA1184375BD000CDD54 /* CLImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CLImageView.m; path = CLImageView/CLImageView.m; sourceTree = "<group>"; };
 		ADED86EE18423C3200CF7EAC /* CLImageViewerDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CLImageViewerDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		ADED86F118423C3200CF7EAC /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		ADED86F318423C3200CF7EAC /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -91,6 +100,33 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		AD066F8D1842ED6A000CDD54 /* UIImageView+URLDownload */ = {
+			isa = PBXGroup;
+			children = (
+				AD066F8E1842EDA5000CDD54 /* UIImageView+URLDownload.h */,
+				AD066F8F1842EDA5000CDD54 /* UIImageView+URLDownload.m */,
+			);
+			name = "UIImageView+URLDownload";
+			sourceTree = "<group>";
+		};
+		AD066F97184356C6000CDD54 /* CLCacheManager */ = {
+			isa = PBXGroup;
+			children = (
+				AD066F98184356E8000CDD54 /* CLCacheManager.h */,
+				AD066F99184356E8000CDD54 /* CLCacheManager.m */,
+			);
+			name = CLCacheManager;
+			sourceTree = "<group>";
+		};
+		AD066F9F184375A1000CDD54 /* CLImageView */ = {
+			isa = PBXGroup;
+			children = (
+				AD066FA0184375BD000CDD54 /* CLImageView.h */,
+				AD066FA1184375BD000CDD54 /* CLImageView.m */,
+			);
+			name = CLImageView;
+			sourceTree = "<group>";
+		};
 		ADED86E518423C3200CF7EAC = {
 			isa = PBXGroup;
 			children = (
@@ -168,10 +204,13 @@
 		ADFFD35A18423E7C00D1712E /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				AD066F97184356C6000CDD54 /* CLCacheManager */,
 				ADFFD35B18423E7C00D1712E /* CLFullscreenImageViewer */,
 				ADFFD35E18423E7C00D1712E /* CLImagePagingView */,
+				AD066F9F184375A1000CDD54 /* CLImageView */,
 				ADFFD36118423E7C00D1712E /* CLZoomingImageView */,
 				ADFFD36418423E7C00D1712E /* UIImage+Placeholder */,
+				AD066F8D1842ED6A000CDD54 /* UIImageView+URLDownload */,
 			);
 			name = Classes;
 			path = ../../Classes;
@@ -313,9 +352,12 @@
 				ADED870818423C3200CF7EAC /* ViewController.m in Sources */,
 				ADED870218423C3200CF7EAC /* AppDelegate.m in Sources */,
 				ADED86FE18423C3200CF7EAC /* main.m in Sources */,
+				AD066F9A184356E8000CDD54 /* CLCacheManager.m in Sources */,
 				ADFFD36718423E7C00D1712E /* CLFullscreenImageViewer.m in Sources */,
+				AD066FA2184375BD000CDD54 /* CLImageView.m in Sources */,
 				ADFFD36818423E7C00D1712E /* CLImagePagingView.m in Sources */,
 				ADFFD36A18423E7C00D1712E /* UIImage+Placeholder.m in Sources */,
+				AD066F901842EDA5000CDD54 /* UIImageView+URLDownload.m in Sources */,
 				ADFFD36918423E7C00D1712E /* CLZoomingImageView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

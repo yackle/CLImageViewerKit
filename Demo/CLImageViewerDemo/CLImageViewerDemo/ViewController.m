@@ -11,7 +11,8 @@
 #import <CLImagePagingView.h>
 #import <CLFullscreenImageViewer.h>
 #import <UIImage+Placeholder.h>
-
+//#import <UIImageView+URLDownload.h>
+#import <CLImageView.h>
 
 @interface ViewController ()
 <CLFullscreenImageViewerDelegate>
@@ -37,7 +38,6 @@
     [_imageViews addObject:[[UIImageView alloc] initWithFrame:CGRectMake(110, 440, 100, 200)]];
     [_imageViews addObject:[[UIImageView alloc] initWithFrame:CGRectMake(215, 440, 100, 100)]];
     
-    
     for(UIImageView *view in _imageViews){
         [self.view addSubview:view];
         
@@ -46,9 +46,8 @@
         [view addGestureRecognizer:gesture];
         
         if([_imageViews indexOfObject:view]<3){
-            [UIImage placekitten:CGSizeMake(view.frame.size.width*2, view.frame.size.height*2) completionBlock:^(UIImage *image) {
-                view.image = image;
-            }];
+            [view setDefaultLoadingView];
+            [view loadWithURL:[UIImage placekittenURL:CGSizeMake(view.frame.size.width*2, view.frame.size.height*2)]];
         }
         else{
             view.image = [UIImage placeholder:CGSizeMake(view.frame.size.width*2, view.frame.size.height*2)];
@@ -65,10 +64,14 @@
     _pagingView.contentInset = UIEdgeInsetsMake(0, 5, 0, 5);
     [self.view addSubview:_pagingView];
     
+    CLImageView *imgview = [CLImageView indicatorImageView];
+    imgview.useLocalCache = YES;
+    [imgview loadWithURL:[UIImage placekittenURL:CGSizeMake(2000, 2000)]];
+    [_pagingView addImageView:imgview];
+    
     for(int i=0;i<3; ++i){
-        [UIImage placekitten:CGSizeMake(arc4random()%500+100, arc4random()%500+100) completionBlock:^(UIImage *image) {
-            [_pagingView addImage:image];
-        }];
+        UIImageView *view = [UIImageView indicatorImageViewWithURL:[UIImage placekittenURL:CGSizeMake(arc4random()%500+100, arc4random()%500+100)] autoLoading:YES];
+        [_pagingView addImageView:view];
     }
 }
 

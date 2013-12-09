@@ -10,7 +10,8 @@
 #import "../CLFullscreenImageViewer/CLFullscreenImageViewer.h"
 
 @interface CLImagePagingView()
-<CLFullscreenImageViewerDelegate>
+<CLFullscreenImageViewerDelegate, UIScrollViewDelegate>
+@property (nonatomic, assign) NSInteger pageIndex;
 @end
 
 @implementation CLImagePagingView
@@ -36,30 +37,24 @@
 
 - (void)customInit
 {
+    self.backgroundColor = [UIColor clearColor];
+    
     _imgViews = [NSMutableArray array];
     
     _scrollView = [[UIScrollView alloc] initWithFrame:self.bounds];
     _scrollView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    _scrollView.backgroundColor = [UIColor clearColor];
     _scrollView.pagingEnabled = YES;
     _scrollView.showsHorizontalScrollIndicator = NO;
     _scrollView.showsVerticalScrollIndicator   = NO;
     _scrollView.clipsToBounds = NO;
+    _scrollView.scrollsToTop = NO;
+    _scrollView.delegate = self;
+    
     [self addSubview:_scrollView];
     
     _tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tappedScrollView:)];
     self.allowsFullscreenSlideshow = YES;
-}
-
-- (void)resetViews
-{
-    for(UIView *view in _imgViews){ [view removeFromSuperview]; }
-    [_imgViews removeAllObjects];
-    
-    for(UIImage *image in self.images){
-        if([image isKindOfClass:[UIImage class]]){
-            [self addImageViewWithImage:image];
-        }
-    }
 }
 
 - (CGRect)contentFrameWithIndex:(NSInteger)index
@@ -70,19 +65,6 @@
     rct.size.width  -= (self.contentInset.left + self.contentInset.right);
     rct.size.height -= (self.contentInset.top + self.contentInset.bottom);
     return rct;
-}
-
-- (void)addImageViewWithImage:(UIImage*)image
-{
-    UIImageView *view = [[UIImageView alloc] initWithFrame:[self contentFrameWithIndex:_imgViews.count]];
-    view.image = image;
-    view.contentMode = UIViewContentModeScaleAspectFill;
-    view.clipsToBounds = YES;
-    view.tag = _imgViews.count;
-    
-    [_imgViews addObject:view];
-    [_scrollView addSubview:view];
-    _scrollView.contentSize = CGSizeMake(_scrollView.frame.size.width * _imgViews.count, 0);
 }
 
 #pragma mark- Properties
@@ -99,48 +81,52 @@
     }
 }
 
-- (void)setImages:(NSArray *)images
-{
-    if(images != _images){
-        _images = images;
-        [self resetViews];
-    }
-}
-
 - (NSArray*)imageViews
 {
     return [_imgViews copy];
 }
 
-- (void)addImage:(UIImage *)image
+- (void)addImageView:(UIImageView*)imageView
 {
-    NSMutableArray *array = [NSMutableArray arrayWithArray:_images];
-    [array addObject:image];
-    _images = [array copy];
+    imageView.frame = [self contentFrameWithIndex:_imgViews.count];
+    imageView.contentMode = UIViewContentModeScaleAspectFill;
+    imageView.clipsToBounds = YES;
+    imageView.tag = _imgViews.count;
     
-    [self addImageViewWithImage:image];
+    [_imgViews addObject:imageView];
+    [_scrollView addSubview:imageView];
+    _scrollView.contentSize = CGSizeMake(_scrollView.frame.size.width * _imgViews.count, 0);
 }
 
-- (NSInteger)pageIndex
+- (void)addImage:(UIImage *)image
 {
-    return (_scrollView.contentOffset.x / _scrollView.frame.size.width + 0.5);
+    [self addImageView:[[UIImageView alloc] initWithImage:image]];
+}
+
+- (void)removeAllImageViews
+{
+    for(UIView *view in _imgViews){ [view removeFromSuperview]; }
+    [_imgViews removeAllObjects];
+    _pageIndex = 0;
 }
 
 - (void)setPageIndex:(NSInteger)pageIndex
 {
-    [self setPageIndex:pageIndex animated:NO];
+    if(pageIndex != _pageIndex){
+        _pageIndex = pageIndex;
+        
+        if([self.delegate respondsToSelector:@selector(imagePagingView:didChangePageIndex:)]){
+            [self.delegate imagePagingView:self didChangePageIndex:_pageIndex];
+        }
+    }
 }
 
 - (void)setPageIndex:(NSInteger)pageIndex animated:(BOOL)animated
 {
-    if(pageIndex>=0 && pageIndex<_imgViews.count){
+    if(pageIndex != self.pageIndex && pageIndex>=0 && pageIndex<_imgViews.count){
+        self.pageIndex = pageIndex;
         [_scrollView setContentOffset:CGPointMake(pageIndex * _scrollView.frame.size.width, 0) animated:animated];
     }
-}
-
-- (void)setPageIndexWithImage:(UIImage*)image animated:(BOOL)animated
-{
-    [self setPageIndex:[self.images indexOfObject:image] animated:animated];
 }
 
 #pragma mark- Gesture event
@@ -155,11 +141,18 @@
     }
 }
 
+#pragma mark- UIScrollViewDelegate
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    self.pageIndex = (_scrollView.contentOffset.x / _scrollView.frame.size.width + 0.5);
+}
+
 #pragma CLFullscreenImageViewerDelegate
 
 - (void)fullscreenImageViewer:(CLFullscreenImageViewer *)view willDismissWithSelectedView:(UIImageView *)selectedView
 {
-    self.pageIndex = [_imgViews indexOfObject:selectedView];
+    [self setPageIndex:[_imgViews indexOfObject:selectedView] animated:NO];
 }
 
 @end
