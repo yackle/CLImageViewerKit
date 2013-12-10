@@ -14,7 +14,7 @@ Pod::Spec.new do |s|
   s.platform     = :ios, '5.0'
   s.requires_arc = true
   s.source       = { :git => "https://github.com/yackle/CLImageViewerKit.git", :tag => "v#{s.version}" }
-  s.frameworks   = 'UIKit', 'QuartzCore'
+  s.frameworks   = 'UIKit'
   
   
   s.subspec 'UIImagePlaceholder' do |a|
