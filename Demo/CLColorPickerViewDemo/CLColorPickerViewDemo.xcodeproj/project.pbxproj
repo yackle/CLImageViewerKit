@@ -22,9 +22,12 @@
 		AD2003F3185C2E4A00143625 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AD2003D5185C2E4A00143625 /* UIKit.framework */; };
 		AD2003FB185C2E4A00143625 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = AD2003F9185C2E4A00143625 /* InfoPlist.strings */; };
 		AD2003FD185C2E4A00143625 /* CLColorPickerViewDemoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = AD2003FC185C2E4A00143625 /* CLColorPickerViewDemoTests.m */; };
+		AD27F687185D57B5000BB3AC /* CLPickerDrum.m in Sources */ = {isa = PBXBuildFile; fileRef = AD27F686185D57B5000BB3AC /* CLPickerDrum.m */; };
+		AD27F68A185D69F0000BB3AC /* CLPickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = AD27F689185D69F0000BB3AC /* CLPickerView.m */; };
 		AD695500185C2F2C0064103C /* UIColor+Patterns.m in Sources */ = {isa = PBXBuildFile; fileRef = AD6954FF185C2F2C0064103C /* UIColor+Patterns.m */; };
 		AD695504185C30170064103C /* CLColorPickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = AD695503185C30170064103C /* CLColorPickerView.m */; };
 		AD695507185C306E0064103C /* CLCircleView.m in Sources */ = {isa = PBXBuildFile; fileRef = AD695506185C306E0064103C /* CLCircleView.m */; };
+		ADC401B6185C476600F04536 /* CLFontPicker.m in Sources */ = {isa = PBXBuildFile; fileRef = ADC401B5185C476600F04536 /* CLFontPicker.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -59,12 +62,18 @@
 		AD2003F8185C2E4A00143625 /* CLColorPickerViewDemoTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "CLColorPickerViewDemoTests-Info.plist"; sourceTree = "<group>"; };
 		AD2003FA185C2E4A00143625 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		AD2003FC185C2E4A00143625 /* CLColorPickerViewDemoTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CLColorPickerViewDemoTests.m; sourceTree = "<group>"; };
+		AD27F685185D57B5000BB3AC /* CLPickerDrum.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CLPickerDrum.h; path = CLPickerView/CLPickerDrum.h; sourceTree = "<group>"; };
+		AD27F686185D57B5000BB3AC /* CLPickerDrum.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CLPickerDrum.m; path = CLPickerView/CLPickerDrum.m; sourceTree = "<group>"; };
+		AD27F688185D69F0000BB3AC /* CLPickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CLPickerView.h; path = CLPickerView/CLPickerView.h; sourceTree = "<group>"; };
+		AD27F689185D69F0000BB3AC /* CLPickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CLPickerView.m; path = CLPickerView/CLPickerView.m; sourceTree = "<group>"; };
 		AD6954FE185C2F2C0064103C /* UIColor+Patterns.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIColor+Patterns.h"; path = "UIColor+Patterns/UIColor+Patterns.h"; sourceTree = "<group>"; };
 		AD6954FF185C2F2C0064103C /* UIColor+Patterns.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIColor+Patterns.m"; path = "UIColor+Patterns/UIColor+Patterns.m"; sourceTree = "<group>"; };
 		AD695502185C30170064103C /* CLColorPickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CLColorPickerView.h; path = CLColorPickerView/CLColorPickerView.h; sourceTree = "<group>"; };
 		AD695503185C30170064103C /* CLColorPickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CLColorPickerView.m; path = CLColorPickerView/CLColorPickerView.m; sourceTree = "<group>"; };
 		AD695505185C306E0064103C /* CLCircleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CLCircleView.h; path = CLColorPickerView/CLCircleView.h; sourceTree = "<group>"; };
 		AD695506185C306E0064103C /* CLCircleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CLCircleView.m; path = CLColorPickerView/CLCircleView.m; sourceTree = "<group>"; };
+		ADC401B4185C476600F04536 /* CLFontPicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CLFontPicker.h; path = CLFontPicker/CLFontPicker.h; sourceTree = "<group>"; };
+		ADC401B5185C476600F04536 /* CLFontPicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CLFontPicker.m; path = CLFontPicker/CLFontPicker.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -174,9 +183,22 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		AD27F684185D5759000BB3AC /* CLPickerView */ = {
+			isa = PBXGroup;
+			children = (
+				AD27F688185D69F0000BB3AC /* CLPickerView.h */,
+				AD27F689185D69F0000BB3AC /* CLPickerView.m */,
+				AD27F685185D57B5000BB3AC /* CLPickerDrum.h */,
+				AD27F686185D57B5000BB3AC /* CLPickerDrum.m */,
+			);
+			name = CLPickerView;
+			sourceTree = "<group>";
+		};
 		AD6954D8185C2EDB0064103C /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				AD27F684185D5759000BB3AC /* CLPickerView */,
+				ADC401B3185C460800F04536 /* CLFontPicker */,
 				AD125B23185C31020066B22E /* UIView+Frame */,
 				AD695501185C2FEC0064103C /* CLColorPickerView */,
 				AD6954FD185C2EF10064103C /* UIColor+Patterns */,
@@ -203,6 +225,15 @@
 				AD695506185C306E0064103C /* CLCircleView.m */,
 			);
 			name = CLColorPickerView;
+			sourceTree = "<group>";
+		};
+		ADC401B3185C460800F04536 /* CLFontPicker */ = {
+			isa = PBXGroup;
+			children = (
+				ADC401B4185C476600F04536 /* CLFontPicker.h */,
+				ADC401B5185C476600F04536 /* CLFontPicker.m */,
+			);
+			name = CLFontPicker;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -303,10 +334,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				AD2003E8185C2E4A00143625 /* ViewController.m in Sources */,
+				AD27F68A185D69F0000BB3AC /* CLPickerView.m in Sources */,
 				AD2003E2185C2E4A00143625 /* AppDelegate.m in Sources */,
 				AD695504185C30170064103C /* CLColorPickerView.m in Sources */,
 				AD125B26185C31020066B22E /* UIView+Frame.m in Sources */,
 				AD695500185C2F2C0064103C /* UIColor+Patterns.m in Sources */,
+				ADC401B6185C476600F04536 /* CLFontPicker.m in Sources */,
+				AD27F687185D57B5000BB3AC /* CLPickerDrum.m in Sources */,
 				AD2003DE185C2E4A00143625 /* main.m in Sources */,
 				AD695507185C306E0064103C /* CLCircleView.m in Sources */,
 			);

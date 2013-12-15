@@ -49,10 +49,24 @@
 
 - (id)init
 {
-    self = [self initWithFrame:CGRectMake(0, 0, 320, 160)];
+    self = [self initWithFrame:CGRectMake(0, 0, 0, 180)];
     if(self){
     }
     return self;
+}
+
+- (id)initWithFrame:(CGRect)frame
+{
+    self = [super initWithFrame:frame];
+    if (self) {
+        [self customeInit];
+    }
+    return self;
+}
+
+- (void)awakeFromNib
+{
+    [self customeInit];
 }
 
 - (UISlider*)defaultSliderWithWidth:(CGFloat)width
@@ -70,34 +84,30 @@
     return slider;
 }
 
-- (id)initWithFrame:(CGRect)frame
+- (void)customeInit
 {
-    self = [super initWithFrame:frame];
-    if (self) {
-        self.backgroundColor = [UIColor clearColor];
-        
-        CGFloat W = frame.size.height;
-        
-        _hueCircle = [[_CLHueCircleView alloc] initWithFrame:CGRectMake(0, 0, W, W)];
-        _hueCircle.delegate = self;
-        [self addSubview:_hueCircle];
-        
-        _saturationSlider = [self defaultSliderWithWidth:0.9*W];
-        _saturationSlider.center = CGPointMake(W + 20, W/2);
-        [_saturationSlider addTarget:self action:@selector(saturationSliderDidChange:) forControlEvents:UIControlEventValueChanged];
-        _saturationSlider.backgroundColor = [UIColor colorWithPatternImage:[self saturationSliderBackground]];
-        [self addSubview:_saturationSlider];
-        
-        
-        _alphaSlider = [self defaultSliderWithWidth:0.9*W];
-        _alphaSlider.center = CGPointMake(_saturationSlider.center.x + 40, W/2);
-        [_alphaSlider addTarget:self action:@selector(alphaSliderDidChange:) forControlEvents:UIControlEventValueChanged];
-        _alphaSlider.backgroundColor = [UIColor colorWithPatternImage:[self alphaSliderBackground]];
-        [self addSubview:_alphaSlider];
-        
-        self.width =  _alphaSlider.center.x + 30;
-    }
-    return self;
+    self.backgroundColor = [UIColor clearColor];
+    
+    CGFloat W = self.height;
+    
+    _hueCircle = [[_CLHueCircleView alloc] initWithFrame:CGRectMake(0, 0, W, W)];
+    _hueCircle.delegate = self;
+    [self addSubview:_hueCircle];
+    
+    _saturationSlider = [self defaultSliderWithWidth:0.9*W];
+    _saturationSlider.center = CGPointMake(W + 20, W/2);
+    [_saturationSlider addTarget:self action:@selector(saturationSliderDidChange:) forControlEvents:UIControlEventValueChanged];
+    _saturationSlider.backgroundColor = [UIColor colorWithPatternImage:[self saturationSliderBackground]];
+    [self addSubview:_saturationSlider];
+    
+    
+    _alphaSlider = [self defaultSliderWithWidth:0.9*W];
+    _alphaSlider.center = CGPointMake(_saturationSlider.center.x + 40, W/2);
+    [_alphaSlider addTarget:self action:@selector(alphaSliderDidChange:) forControlEvents:UIControlEventValueChanged];
+    _alphaSlider.backgroundColor = [UIColor colorWithPatternImage:[self alphaSliderBackground]];
+    [self addSubview:_alphaSlider];
+    
+    self.width =  _alphaSlider.center.x + 30;
 }
 
 - (void)setColor:(UIColor *)color
