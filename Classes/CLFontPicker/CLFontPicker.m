@@ -1,6 +1,5 @@
 //
 //  CLFontPicker.m
-//  CLColorPickerViewDemo
 //
 //  Created by sho yakushiji on 2013/12/14.
 //  Copyright (c) 2013年 CALACULU. All rights reserved.
