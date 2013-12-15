@@ -26,6 +26,11 @@ Pod::Spec.new do |s|
   s.subspec 'UIViewFrame' do |a|
     a.source_files = 'Classes/UIView+Frame/*.{h,m}'
   end
+  s.subspec 'UIColorPatterns' do |a|
+    a.source_files = 'Classes/UIColor+Patterns/*.{h,m}'
+  end
+  
+  
   
   s.subspec 'CLZoomingImageView' do |a|
     a.source_files = 'Classes/CLZoomingImageView/*.{h,m}'
@@ -38,6 +43,7 @@ Pod::Spec.new do |s|
     a.source_files = 'Classes/CLImagePagingView/*.{h,m}'
     a.dependency 'CLImageViewerKit/CLFullscreenImageViewer'
   end
+  
   
   
   s.subspec 'UIImageViewURLDownload' do |a|
@@ -53,4 +59,21 @@ Pod::Spec.new do |s|
     a.dependency 'CLImageViewerKit/CLCacheManager'
   end
   
+  
+  
+  s.subspec 'CLPickerView' do |a|
+    a.source_files = 'Classes/CLPickerView/*.{h,m}'
+    a.dependency 'CLImageViewerKit/UIViewFrame'
+  end
+  s.subspec 'CLFontPicker' do |a|
+    a.source_files = 'Classes/CLFontPicker/*.{h,m}'
+    a.dependency 'CLImageViewerKit/CLPickerView'
+  end
+  
+  
+  
+  s.subspec 'CLColorPickerView' do |a|
+    a.source_files = 'Classes/CLColorPickerView/*.{h,m}'
+    a.dependency 'CLImageViewerKit/UIViewFrame'
+  end
 end
