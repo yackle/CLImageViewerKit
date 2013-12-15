@@ -8,14 +8,14 @@
 
 #import "ViewController.h"
 
-#import "CLFontPicker.h"
+#import "CLFontPickerView.h"
 #import "CLColorPickerView.h"
 #import "UIColor+Patterns.h"
 #import "UIView+Frame.h"
 
 
 @interface ViewController ()
-<CLColorPickerViewDelegate, CLFontPickerDelegate>
+<CLColorPickerViewDelegate, CLFontPickerViewDelegate>
 @end
 
 @implementation ViewController
@@ -45,7 +45,7 @@
     [self.view addSubview:picker];
     
     
-    CLFontPicker *fontPicker = [[CLFontPicker alloc] initWithFrame:CGRectMake(0, 0, picker.width, 140)];
+    CLFontPickerView *fontPicker = [[CLFontPickerView alloc] initWithFrame:CGRectMake(0, 0, picker.width, 140)];
     fontPicker.center = self.view.center;
     fontPicker.top = picker.bottom + 10;
     fontPicker.layer.cornerRadius = 5;
@@ -73,7 +73,7 @@
 
 #pragma mark- Font picker delegate
 
-- (void)fontPicker:(CLFontPicker *)picker didSelectFont:(UIFont *)font
+- (void)fontPickerView:(CLFontPickerView *)picker didSelectFont:(UIFont *)font
 {
     _label.font = font;
 }

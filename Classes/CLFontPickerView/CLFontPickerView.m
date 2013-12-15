@@ -1,22 +1,22 @@
 //
-//  CLFontPicker.m
+//  CLFontPickerView.m
 //
 //  Created by sho yakushiji on 2013/12/14.
 //  Copyright (c) 2013年 CALACULU. All rights reserved.
 //
 
-#import "CLFontPicker.h"
+#import "CLFontPickerView.h"
 
 #import "UIView+Frame.h"
 #import "CLPickerView.h"
 
-const CGFloat kCLFontPickerConstantFontSize = 14;
+const CGFloat kCLFontPickerViewConstantFontSize = 14;
 
-@interface CLFontPicker()
+@interface CLFontPickerView()
 <CLPickerViewDelegate, CLPickerViewDataSource>
 @end
 
-@implementation CLFontPicker
+@implementation CLFontPickerView
 {
     CLPickerView *_pickerView;
 }
@@ -27,7 +27,7 @@ const CGFloat kCLFontPickerConstantFontSize = 14;
     
     for(NSString *familyName in [UIFont familyNames]){
         for(NSString *fontName in [UIFont fontNamesForFamilyName:familyName]){
-            [list addObject:[UIFont fontWithName:fontName size:kCLFontPickerConstantFontSize]];
+            [list addObject:[UIFont fontWithName:fontName size:kCLFontPickerViewConstantFontSize]];
         }
     }
     
@@ -41,7 +41,7 @@ const CGFloat kCLFontPickerConstantFontSize = 14;
 
 + (UIFont*)defaultFont
 {
-    return [UIFont fontWithName:@"HiraKakuProN-W3"size:kCLFontPickerConstantFontSize];
+    return [UIFont fontWithName:@"HiraKakuProN-W3"size:kCLFontPickerViewConstantFontSize];
 }
 
 - (id)initWithFrame:(CGRect)frame
@@ -93,7 +93,7 @@ const CGFloat kCLFontPickerConstantFontSize = 14;
 
 - (void)setFont:(UIFont *)font
 {
-    UIFont *tmp = [font fontWithSize:kCLFontPickerConstantFontSize];
+    UIFont *tmp = [font fontWithSize:kCLFontPickerViewConstantFontSize];
     
     NSInteger fontIndex = [self.fontList indexOfObject:tmp];
     if(fontIndex==NSNotFound){ fontIndex = 0; }
@@ -189,7 +189,7 @@ const CGFloat kCLFontPickerConstantFontSize = 14;
             }
             break;
         case 1:
-            lbl.font = [UIFont systemFontOfSize:kCLFontPickerConstantFontSize];
+            lbl.font = [UIFont systemFontOfSize:kCLFontPickerViewConstantFontSize];
             lbl.text = [NSString stringWithFormat:@"%@", self.fontSizes[row]];
             break;
         default:
@@ -201,8 +201,8 @@ const CGFloat kCLFontPickerConstantFontSize = 14;
 
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
 {
-    if([self.delegate respondsToSelector:@selector(fontPicker:didSelectFont:)]){
-        [self.delegate fontPicker:self didSelectFont:self.font];
+    if([self.delegate respondsToSelector:@selector(fontPickerView:didSelectFont:)]){
+        [self.delegate fontPickerView:self didSelectFont:self.font];
     }
 }
 

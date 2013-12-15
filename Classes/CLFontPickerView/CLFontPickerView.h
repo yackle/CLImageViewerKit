@@ -1,5 +1,5 @@
 //
-//  CLFontPicker.h
+//  CLFontPickerView.h
 //
 //  Created by sho yakushiji on 2013/12/14.
 //  Copyright (c) 2013年 CALACULU. All rights reserved.
@@ -7,11 +7,11 @@
 
 #import <UIKit/UIKit.h>
 
-@protocol CLFontPickerDelegate;
+@protocol CLFontPickerViewDelegate;
 
-@interface CLFontPicker : UIView
+@interface CLFontPickerView : UIView
 
-@property (nonatomic, weak) id<CLFontPickerDelegate> delegate;
+@property (nonatomic, weak) id<CLFontPickerViewDelegate> delegate;
 @property (nonatomic, strong) NSArray *fontList;
 @property (nonatomic, strong) NSArray *fontSizes;
 @property (nonatomic, strong) UIFont *font;
@@ -22,8 +22,8 @@
 @end
 
 
-@protocol CLFontPickerDelegate <NSObject>
+@protocol CLFontPickerViewDelegate <NSObject>
 @optional
-- (void)fontPicker:(CLFontPicker*)picker didSelectFont:(UIFont*)font;
+- (void)fontPickerView:(CLFontPickerView*)pickerView didSelectFont:(UIFont*)font;
 
 @end

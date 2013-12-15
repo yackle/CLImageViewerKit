@@ -65,8 +65,8 @@ Pod::Spec.new do |s|
     a.source_files = 'Classes/CLPickerView/*.{h,m}'
     a.dependency 'CLImageViewerKit/UIViewFrame'
   end
-  s.subspec 'CLFontPicker' do |a|
-    a.source_files = 'Classes/CLFontPicker/*.{h,m}'
+  s.subspec 'CLFontPickerView' do |a|
+    a.source_files = 'Classes/CLFontPickerView/*.{h,m}'
     a.dependency 'CLImageViewerKit/CLPickerView'
   end
   
