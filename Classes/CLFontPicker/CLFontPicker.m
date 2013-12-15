@@ -145,7 +145,7 @@ const CGFloat kCLFontPickerConstantFontSize = 14;
 
 - (CGFloat)pickerView:(CLPickerView *)pickerView rowHeightForComponent:(NSInteger)component
 {
-    return 30;
+    return self.height/4;
 }
 
 - (CGFloat)pickerView:(CLPickerView *)pickerView widthForComponent:(NSInteger)component

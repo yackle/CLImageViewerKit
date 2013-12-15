@@ -45,7 +45,7 @@
     [self.view addSubview:picker];
     
     
-    CLFontPicker *fontPicker = [[CLFontPicker alloc] initWithFrame:CGRectMake(0, 0, picker.width, 120)];
+    CLFontPicker *fontPicker = [[CLFontPicker alloc] initWithFrame:CGRectMake(0, 0, picker.width, 140)];
     fontPicker.center = self.view.center;
     fontPicker.top = picker.bottom + 10;
     fontPicker.layer.cornerRadius = 5;
