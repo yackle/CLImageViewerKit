@@ -61,6 +61,7 @@ const CGFloat kCLFontPickerViewConstantFontSize = 14;
         self.fontSizes = [self.class defaultSizes];
         self.font = [self.class defaultFont];
         self.foregroundColor = [UIColor colorWithWhite:1 alpha:0.8];
+        self.textColor = [UIColor blackColor];
     }
     return self;
 }
@@ -176,6 +177,7 @@ const CGFloat kCLFontPickerViewConstantFontSize = 14;
         lbl.adjustsFontSizeToFitWidth = YES;
         lbl.minimumScaleFactor = 0.5;
         lbl.textAlignment = NSTextAlignmentCenter;
+        lbl.textColor = self.textColor;
     }
     
     switch (component) {

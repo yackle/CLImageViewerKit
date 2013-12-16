@@ -115,11 +115,11 @@
     CGFloat H, S, B, A;
     
     if([color getHue:&H saturation:&S brightness:&B alpha:&A]){
-        _saturationSlider.value = S;
+        _saturationSlider.value = (B==0) ? 1 :S;
         _alphaSlider.value = A;
     }
     else if([color getWhite:&S alpha:&A]){
-        _saturationSlider.value = 0;
+        _saturationSlider.value = (S==0) ? 1 : 0;
         _alphaSlider.value = A;
     }
     
@@ -349,7 +349,7 @@
     CGFloat H, S, B, A;
     
     if([color getHue:&H saturation:&S brightness:&B alpha:&A]){
-        _saturation = S;
+        _saturation = (B==0) ? 1 : S;
         _alpha = A;
         
         CGFloat theta = H * 2 * M_PI;
@@ -359,7 +359,7 @@
         [self colorStateDidChange];
     }
     else if([color getWhite:&S alpha:&A]){
-        _saturation = 0;
+        _saturation = (S==0) ? 1 : S;
         _alpha = A;
         
         CGFloat R = self.circleRadius * S;
@@ -367,6 +367,7 @@
         _circleView.center = CGPointMake(self.center.x + R, self.center.y);
         [self colorStateDidChange];
     }
+    [self setNeedsDisplay];
 }
 
 - (void)setColorSaturation:(CGFloat)saturation

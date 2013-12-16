@@ -10,6 +10,8 @@
 
 @interface CLCacheManager : NSObject
 
++ (void)removeCacheDirectory;
+
 + (NSData*)localCachedDataWithURL:(NSURL*)url;
 + (void)removeCacheForURL:(NSURL*)url;
 

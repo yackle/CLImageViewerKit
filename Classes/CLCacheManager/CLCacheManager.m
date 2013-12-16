@@ -64,6 +64,16 @@ static CLCacheManager *_sharedInstance = nil;
     [_memoryCache removeAllObjects];
 }
 
+#pragma mark- delete all
+
++ (void)removeCacheDirectory
+{
+    [_memoryCache removeAllObjects];
+    
+    NSString *path = [self cacheDirectory];
+    [[NSFileManager defaultManager] removeItemAtPath:path error:nil];
+}
+
 #pragma mark- wrapper
 
 + (NSData*)localCachedDataWithURL:(NSURL*)url

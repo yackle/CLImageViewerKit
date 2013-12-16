@@ -18,6 +18,7 @@
 @property (nonatomic, strong) NSString *text;
 @property (nonatomic, assign) BOOL sizeComponentHidden;
 @property (nonatomic, strong) UIColor *foregroundColor;
+@property (nonatomic, strong) UIColor *textColor;
 
 @end
 
