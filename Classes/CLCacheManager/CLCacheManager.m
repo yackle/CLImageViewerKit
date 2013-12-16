@@ -170,9 +170,7 @@ static CLCacheManager *_sharedInstance = nil;
 - (void)removeCacheDirectory
 {
     [_memoryCache removeAllObjects];
-    
-    NSString *path = [self cacheDirectory];
-    [[NSFileManager defaultManager] removeItemAtPath:path error:nil];
+    [[NSFileManager defaultManager] removeItemAtPath:[self.class cacheDirectory] error:nil];
 }
 
 - (NSData*)localCachedDataWithHash:(NSString*)hash
