@@ -13,6 +13,7 @@
 @interface CLFullscreenImageViewer : UIView
 
 @property (nonatomic, weak) id<CLFullscreenImageViewerDelegate> delegate;
+@property (nonatomic, assign) CGFloat backgroundScale;
 
 - (void)showWithImageViews:(NSArray*)views selectedView:(UIImageView*)selectedView;
 

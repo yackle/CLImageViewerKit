@@ -74,6 +74,7 @@
     self = [super initWithFrame:[[[[UIApplication sharedApplication] delegate] window] bounds]];
     if (self) {
         self.backgroundColor = [UIColor colorWithWhite:0.1 alpha:1];
+        self.backgroundScale = 0.95;
         
         UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(didPan:)];
         pan.maximumNumberOfTouches = 1;
@@ -162,7 +163,7 @@
     [UIView animateWithDuration:0.3
                      animations:^{
                          _scrollView.alpha = 1;
-                         window.rootViewController.view.transform = CGAffineTransformMakeScale(0.95, 0.95);
+                         window.rootViewController.view.transform = CGAffineTransformMakeScale(self.backgroundScale, self.backgroundScale);
                          
                          selectedView.transform = CGAffineTransformIdentity;
                          
