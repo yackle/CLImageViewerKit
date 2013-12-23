@@ -161,7 +161,7 @@ const CGFloat kCLFontPickerViewConstantFontSize = 14;
     return 0;
 }
 
-- (UIView*)pickerView:(CLPickerView *)pickerView viewForRow:(NSInteger)row forComponent:(NSInteger)component reusingView:(UIView *)view
+- (UIView*)pickerView:(CLPickerView *)pickerView viewForIndex:(NSInteger)row forComponent:(NSInteger)component reusingView:(UIView *)view
 {
     UILabel *lbl = nil;
     

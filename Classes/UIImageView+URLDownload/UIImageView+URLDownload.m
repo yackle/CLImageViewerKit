@@ -206,6 +206,7 @@ const char* const kCLLoadingViewKey   = "CL_URLDownload_LoadingViewKey";
         if([url isEqual:self.url]){
             self.image = image;
             self.loadingState = UIImageViewURLDownloadStateLoaded;
+            [self hideLoadingView];
         }
     });
 }
