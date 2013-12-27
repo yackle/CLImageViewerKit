@@ -11,6 +11,7 @@
 @interface CLCacheManager : NSObject
 
 + (void)removeCacheDirectory;
++ (void)limitNumberOfCacheFiles:(NSInteger)numberOfCacheFiles;
 
 + (NSData*)localCachedDataWithURL:(NSURL*)url;
 + (void)removeCacheForURL:(NSURL*)url;

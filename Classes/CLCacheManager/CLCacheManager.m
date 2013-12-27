@@ -10,8 +10,17 @@
 #import <CommonCrypto/CommonHMAC.h>
 #import "UIImage+Utility.h"
 
+
+
 @interface NSString(CLCacheManager)
 - (NSString*)MD5Hash;
+@end
+
+@interface CLFileAttribute : NSObject
+@property (nonatomic, strong) NSString *filePath;
+@property (nonatomic, strong) NSDictionary *fileAttributes;
+@property (nonatomic, readonly) NSDate *fileModificationDate;
+- (id)initWithPath:(NSString*)filePath attributes:(NSDictionary*)attributes;
 @end
 
 
@@ -160,21 +169,82 @@ static CLCacheManager *_sharedInstance = nil;
     }
 }
 
++ (NSArray*)fileAttributesInWorkSpace
+{
+    NSString *rootDir = self.cacheDirectory;
+    NSMutableArray *files = [NSMutableArray array];
+    
+    for(int i=0; i<16; i++) {
+        for(int j=0; j<16; j++) {
+            NSString *subDir = [NSString stringWithFormat:@"%@/%X%X", rootDir, i, j];
+            NSArray *list = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:subDir error:nil];
+            
+            for(id name in list){
+                NSString *filePath = [NSString stringWithFormat:@"%@/%@", subDir, name];
+                NSDictionary *attr = [[NSFileManager defaultManager] attributesOfItemAtPath:filePath error:nil];
+                if(attr){
+                    [files addObject:[[CLFileAttribute alloc] initWithPath:filePath attributes:attr]];
+                }
+            }
+        }
+    }
+    return files;
+}
+
 + (NSString*)pathForHash:(NSString*)hash
 {
     return  [NSString stringWithFormat:@"%@/%@/%@", self.cacheDirectory, [hash substringToIndex:2], hash];
 }
 
-#pragma mark- NSData caching
+#pragma mark- Caching control
+
++ (void)limitNumberOfCacheFiles:(NSInteger)numberOfCacheFiles
+{
+    NSArray *list = [self fileAttributesInWorkSpace];
+    
+    NSSortDescriptor *dsc = [NSSortDescriptor sortDescriptorWithKey:@"fileModificationDate" ascending:NO];
+    list = [list sortedArrayUsingDescriptors:@[dsc]];
+    
+    for(NSInteger i=numberOfCacheFiles; i<list.count; ++i){
+        CLFileAttribute *file = list[i];
+        [[NSFileManager defaultManager] removeItemAtPath:file.filePath error:nil];
+    }
+}
+
++ (void)didAccessToDataForHash:(NSString*)hash
+{
+    NSString *path = [CLCacheManager pathForHash:hash];
+    
+    NSError *err = nil;
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSMutableDictionary *fileAttribute = [[fileManager attributesOfItemAtPath:path error:&err] mutableCopy];
+    
+    if(err){ return; }
+    
+    fileAttribute[NSFileModificationDate] = [NSDate date];
+    [fileManager setAttributes:fileAttribute ofItemAtPath:path error:nil];
+}
+
+#pragma mark- Caching control
+
+- (void)removeCacheForHash:(NSString*)hash
+{
+    [_memoryCache removeObjectForKey:hash];
+    
+    [[NSFileManager defaultManager] removeItemAtPath:[CLCacheManager pathForHash:hash] error:nil];
+}
 
 - (void)removeCacheDirectory
 {
     [_memoryCache removeAllObjects];
-    [[NSFileManager defaultManager] removeItemAtPath:[self.class cacheDirectory] error:nil];
+    [[NSFileManager defaultManager] removeItemAtPath:[CLCacheManager cacheDirectory] error:nil];
 }
+
+#pragma mark- NSData caching
 
 - (NSData*)localCachedDataWithHash:(NSString*)hash
 {
+    [CLCacheManager didAccessToDataForHash:hash];
     return [NSData dataWithContentsOfFile:[CLCacheManager pathForHash:hash]];
 }
 
@@ -182,6 +252,7 @@ static CLCacheManager *_sharedInstance = nil;
 {
     NSData   *data = [_memoryCache objectForKey:hash];
     if(data){
+        [CLCacheManager didAccessToDataForHash:hash];
         return data;
     }
     
@@ -194,18 +265,12 @@ static CLCacheManager *_sharedInstance = nil;
 
 - (void)storeData:(NSData*)data forHash:(NSString*)hash storeMemoryCache:(BOOL)storeMemoryCache
 {
+    [CLCacheManager didAccessToDataForHash:hash];
+    
     if(storeMemoryCache){
         [_memoryCache setObject:data forKey:hash];
     }
     [data writeToFile:[CLCacheManager pathForHash:hash] atomically:NO];
-}
-
-- (void)removeCacheForHash:(NSString*)hash
-{
-    [_memoryCache removeObjectForKey:hash];
-    
-    NSString *path = [CLCacheManager pathForHash:hash];
-    [[NSFileManager defaultManager] removeItemAtPath:path error:nil];
 }
 
 - (NSData*)dataWithURL:(NSURL*)url storeMemoryCache:(BOOL)storeMemoryCache
@@ -279,6 +344,27 @@ static CLCacheManager *_sharedInstance = nil;
 	return [NSString stringWithFormat:@"%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X",
             result[0], result[1], result[2], result[3], result[4], result[5], result[6], result[7],
             result[8], result[9], result[10], result[11],result[12], result[13], result[14], result[15]];
+}
+
+@end
+
+
+
+@implementation CLFileAttribute
+
+- (id)initWithPath:(NSString *)filePath attributes:(NSDictionary *)attributes
+{
+    self = [super init];
+    if(self){
+        self.filePath = filePath;
+        self.fileAttributes = attributes;
+    }
+    return self;
+}
+
+- (NSDate*)fileModificationDate
+{
+    return [_fileAttributes fileModificationDate];
 }
 
 @end

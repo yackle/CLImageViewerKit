@@ -13,6 +13,7 @@
 #import <UIImage+Placeholder.h>
 //#import <UIImageView+URLDownload.h>
 #import <CLImageView.h>
+#import "CLCacheManager.h"
 
 @interface ViewController ()
 <CLFullscreenImageViewerDelegate>
