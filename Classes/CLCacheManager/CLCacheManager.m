@@ -32,6 +32,7 @@
 #pragma mark- singleton pattern
 
 static CLCacheManager *_sharedInstance = nil;
+static NSString *_sharedCacheDirectoryPath = nil;
 
 + (CLCacheManager*)manager
 {
@@ -78,6 +79,7 @@ static CLCacheManager *_sharedInstance = nil;
 + (void)removeCacheDirectory
 {
     [self.manager removeCacheDirectory];
+    _sharedCacheDirectoryPath = nil;
 }
 
 + (NSData*)localCachedDataWithURL:(NSURL*)url
@@ -137,15 +139,13 @@ static CLCacheManager *_sharedInstance = nil;
 
 + (NSString*)cacheDirectory
 {
-    static NSString *cacheDir = nil;
-    
-    if(cacheDir==nil){
+    if(_sharedCacheDirectoryPath==nil){
         NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
-        cacheDir = [paths.lastObject stringByAppendingPathComponent:NSStringFromClass(self)];
-        [self checkWorkspace:cacheDir];
+        _sharedCacheDirectoryPath = [paths.lastObject stringByAppendingPathComponent:NSStringFromClass(self)];
+        [self checkWorkspace:_sharedCacheDirectoryPath];
     }
     
-    return cacheDir;
+    return _sharedCacheDirectoryPath;
 }
 
 + (void)checkWorkspace:(NSString*)rootDir
