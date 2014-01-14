@@ -142,7 +142,7 @@
 
 - (NSString*)_pathForHash:(NSString*)hash
 {
-    return  [NSString stringWithFormat:@"%@/%@/%@", _cacheDirectoryPath, [hash substringToIndex:2], hash];
+    return  [NSString stringWithFormat:@"%@/%@/%@", [self _cacheDirectory], [hash substringToIndex:2], hash];
 }
 
 #pragma mark- Caching control
