@@ -24,47 +24,55 @@
 @end
 
 
+@interface CLCacheManager()
+@property (nonatomic, strong) NSString *identifier;
+@end
+
 @implementation CLCacheManager
 {
     NSCache *_memoryCache;
+    NSString *_cacheDirectoryPath;
 }
 
-#pragma mark- singleton pattern
+#pragma mark- Initialization
 
-static CLCacheManager *_sharedInstance = nil;
-static NSString *_sharedCacheDirectoryPath = nil;
++ (CLCacheManager*)defaultManager
+{
+    return self.manager;
+}
 
 + (CLCacheManager*)manager
 {
+    static CLCacheManager *_sharedInstance = nil;
     static dispatch_once_t  onceToken;
+    
     dispatch_once(&onceToken, ^{
-        _sharedInstance = [CLCacheManager new];
+        _sharedInstance = [[CLCacheManager alloc] initWithIdentifier:NSStringFromClass(self)];
     });
     return _sharedInstance;
 }
 
-+ (id)allocWithZone:(NSZone *)zone
++ (CLCacheManager*)managerWithIdentifier:(NSString*)identifier
 {
-    @synchronized(self) {
-        if (_sharedInstance == nil) {
-            _sharedInstance = [super allocWithZone:zone];
-            return _sharedInstance;
-        }
-    }
-    return nil;
-}
-
-- (id)copyWithZone:(NSZone *)zone
-{
-    return self;
+    return [[CLCacheManager alloc] initWithIdentifier:identifier];
 }
 
 - (id)init
 {
+    return self.class.manager;
+}
+
+- (id)initWithIdentifier:(NSString*)identifier
+{
+    if(identifier.length<=0){
+        return self.class.manager;
+    }
+    
     self = [super init];
-    if (self) {
+    if(self) {
         _memoryCache = [NSCache new];
         _memoryCache.countLimit = 50;
+        self.identifier = identifier;
     }
     return self;
 }
@@ -74,81 +82,9 @@ static NSString *_sharedCacheDirectoryPath = nil;
     [_memoryCache removeAllObjects];
 }
 
-#pragma mark- wrapper
+#pragma mark- Uitility
 
-+ (void)removeCacheDirectory
-{
-    [self.manager removeCacheDirectory];
-    _sharedCacheDirectoryPath = nil;
-}
-
-+ (NSData*)localCachedDataWithURL:(NSURL*)url
-{
-    if(url.absoluteString.length>0){
-        return [self.manager localCachedDataWithHash:url.absoluteString.MD5Hash];
-    }
-    return nil;
-}
-
-+ (void)removeCacheForURL:(NSURL *)url
-{
-    if(url.absoluteString.length>0){
-        [self.manager removeCacheForHash:url.absoluteString.MD5Hash];
-    }
-}
-
-#pragma mark- NSData caching
-
-+ (void)storeData:(NSData *)data forURL:(NSURL *)url storeMemoryCache:(BOOL)storeMemoryCache
-{
-    if(data && url.absoluteString.length>0){
-        [self.manager storeData:data forHash:url.absoluteString.MD5Hash storeMemoryCache:storeMemoryCache];
-    }
-}
-
-+ (NSData*)dataWithURL:(NSURL*)url storeMemoryCache:(BOOL)storeMemoryCache
-{
-    return [self.manager dataWithURL:url storeMemoryCache:storeMemoryCache];
-}
-
-+ (NSData*)dataWithURL:(NSURL*)url
-{
-    return [self.manager dataWithURL:url storeMemoryCache:NO];
-}
-
-#pragma mark- UIImage caching
-
-+ (void)storeMemoryCacheWithImage:(UIImage*)image forURL:(NSURL*)url
-{
-    if(image && url.absoluteString.length>0){
-        [self.manager storeMemoryCacheWithImage:image forHash:url.absoluteString.MD5Hash];
-    }
-}
-
-+ (UIImage*)imageWithURL:(NSURL*)url storeMemoryCache:(BOOL)storeMemoryCache
-{
-    return [self.manager imageWithURL:url storeMemoryCache:storeMemoryCache];
-}
-
-+ (UIImage*)imageWithURL:(NSURL*)url
-{
-    return [self.manager imageWithURL:url storeMemoryCache:YES];
-}
-
-#pragma mark- directory operation
-
-+ (NSString*)cacheDirectory
-{
-    if(_sharedCacheDirectoryPath==nil){
-        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
-        _sharedCacheDirectoryPath = [paths.lastObject stringByAppendingPathComponent:NSStringFromClass(self)];
-        [self checkWorkspace:_sharedCacheDirectoryPath];
-    }
-    
-    return _sharedCacheDirectoryPath;
-}
-
-+ (void)checkWorkspace:(NSString*)rootDir
++ (void)_checkWorkspace:(NSString*)rootDir
 {
     BOOL isDirectory = NO;
     BOOL exists = [[NSFileManager defaultManager] fileExistsAtPath:rootDir isDirectory:&isDirectory];
@@ -169,9 +105,22 @@ static NSString *_sharedCacheDirectoryPath = nil;
     }
 }
 
-+ (NSArray*)fileAttributesInWorkSpace
+#pragma mark- directory operation
+
+- (NSString*)_cacheDirectory
 {
-    NSString *rootDir = self.cacheDirectory;
+    if(_cacheDirectoryPath==nil){
+        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
+        _cacheDirectoryPath = [paths.lastObject stringByAppendingPathComponent:self.identifier.MD5Hash];
+        [self.class _checkWorkspace:_cacheDirectoryPath];
+    }
+    
+    return _cacheDirectoryPath;
+}
+
+- (NSArray*)_fileAttributesInWorkSpace
+{
+    NSString *rootDir = self._cacheDirectory;
     NSMutableArray *files = [NSMutableArray array];
     
     for(int i=0; i<16; i++) {
@@ -191,16 +140,16 @@ static NSString *_sharedCacheDirectoryPath = nil;
     return files;
 }
 
-+ (NSString*)pathForHash:(NSString*)hash
+- (NSString*)_pathForHash:(NSString*)hash
 {
-    return  [NSString stringWithFormat:@"%@/%@/%@", self.cacheDirectory, [hash substringToIndex:2], hash];
+    return  [NSString stringWithFormat:@"%@/%@/%@", _cacheDirectoryPath, [hash substringToIndex:2], hash];
 }
 
 #pragma mark- Caching control
 
-+ (void)limitNumberOfCacheFiles:(NSInteger)numberOfCacheFiles
+- (void)limitNumberOfCacheFiles:(NSInteger)numberOfCacheFiles
 {
-    NSArray *list = [self fileAttributesInWorkSpace];
+    NSArray *list = [self _fileAttributesInWorkSpace];
     
     NSSortDescriptor *dsc = [NSSortDescriptor sortDescriptorWithKey:@"fileModificationDate" ascending:NO];
     list = [list sortedArrayUsingDescriptors:@[dsc]];
@@ -211,9 +160,9 @@ static NSString *_sharedCacheDirectoryPath = nil;
     }
 }
 
-+ (void)didAccessToDataForHash:(NSString*)hash
+- (void)_didAccessToDataForHash:(NSString*)hash
 {
-    NSString *path = [CLCacheManager pathForHash:hash];
+    NSString *path = [self _pathForHash:hash];
     
     NSError *err = nil;
     NSFileManager *fileManager = [NSFileManager defaultManager];
@@ -225,52 +174,74 @@ static NSString *_sharedCacheDirectoryPath = nil;
     [fileManager setAttributes:fileAttribute ofItemAtPath:path error:nil];
 }
 
-#pragma mark- Caching control
+- (void)removeCacheForURL:(NSURL *)url
+{
+    if(url.absoluteString.length>0){
+        [self _removeCacheForHash:url.absoluteString.MD5Hash];
+    }
+}
 
-- (void)removeCacheForHash:(NSString*)hash
+- (void)_removeCacheForHash:(NSString*)hash
 {
     [_memoryCache removeObjectForKey:hash];
     
-    [[NSFileManager defaultManager] removeItemAtPath:[CLCacheManager pathForHash:hash] error:nil];
+    [[NSFileManager defaultManager] removeItemAtPath:[self _pathForHash:hash] error:nil];
 }
 
 - (void)removeCacheDirectory
 {
     [_memoryCache removeAllObjects];
-    [[NSFileManager defaultManager] removeItemAtPath:[CLCacheManager cacheDirectory] error:nil];
+    [[NSFileManager defaultManager] removeItemAtPath:_cacheDirectoryPath error:nil];
+    
+    _cacheDirectoryPath = nil;
 }
 
 #pragma mark- NSData caching
 
-- (NSData*)localCachedDataWithHash:(NSString*)hash
+- (void)storeData:(NSData *)data forURL:(NSURL *)url storeMemoryCache:(BOOL)storeMemoryCache
 {
-    [CLCacheManager didAccessToDataForHash:hash];
-    return [NSData dataWithContentsOfFile:[CLCacheManager pathForHash:hash]];
+    if(data && url.absoluteString.length>0){
+        [self _storeData:data forHash:url.absoluteString.MD5Hash storeMemoryCache:storeMemoryCache];
+    }
 }
 
-- (NSData*)cachedDataWithHash:(NSString*)hash storeMemoryCache:(BOOL)storeMemoryCache
+- (void)_storeData:(NSData*)data forHash:(NSString*)hash storeMemoryCache:(BOOL)storeMemoryCache
 {
-    NSData   *data = [_memoryCache objectForKey:hash];
-    if(data){
-        [CLCacheManager didAccessToDataForHash:hash];
-        return data;
-    }
-    
-    data = [self localCachedDataWithHash:hash];
-    if(storeMemoryCache && data!=nil){
-        [_memoryCache setObject:data forKey:hash];
-    }
-    return data;
-}
-
-- (void)storeData:(NSData*)data forHash:(NSString*)hash storeMemoryCache:(BOOL)storeMemoryCache
-{
-    [CLCacheManager didAccessToDataForHash:hash];
+    [self _didAccessToDataForHash:hash];
     
     if(storeMemoryCache){
         [_memoryCache setObject:data forKey:hash];
     }
-    [data writeToFile:[CLCacheManager pathForHash:hash] atomically:NO];
+    [data writeToFile:[self _pathForHash:hash] atomically:NO];
+}
+
+- (NSData*)localCachedDataWithURL:(NSURL*)url
+{
+    if(url.absoluteString.length>0){
+        return [self _localCachedDataWithHash:url.absoluteString.MD5Hash];
+    }
+    return nil;
+}
+
+- (NSData*)_localCachedDataWithHash:(NSString*)hash
+{
+    [self _didAccessToDataForHash:hash];
+    return [NSData dataWithContentsOfFile:[self _pathForHash:hash]];
+}
+
+- (NSData*)_cachedDataWithHash:(NSString*)hash storeMemoryCache:(BOOL)storeMemoryCache
+{
+    NSData   *data = [_memoryCache objectForKey:hash];
+    if(data){
+        [self _didAccessToDataForHash:hash];
+        return data;
+    }
+    
+    data = [self _localCachedDataWithHash:hash];
+    if(storeMemoryCache && data!=nil){
+        [_memoryCache setObject:data forKey:hash];
+    }
+    return data;
 }
 
 - (NSData*)dataWithURL:(NSURL*)url storeMemoryCache:(BOOL)storeMemoryCache
@@ -278,18 +249,16 @@ static NSString *_sharedCacheDirectoryPath = nil;
     if(url.absoluteString.length==0){
         return nil;
     }
-    return [self cachedDataWithHash:url.absoluteString.MD5Hash storeMemoryCache:storeMemoryCache];
+    return [self _cachedDataWithHash:url.absoluteString.MD5Hash storeMemoryCache:storeMemoryCache];
 }
 
 #pragma mark- UIImage caching
 
-- (UIImage*)memoryCachedImageWithHash:(NSString*)hash
+- (void)storeMemoryCacheWithImage:(UIImage*)image forURL:(NSURL*)url
 {
-     id data = [_memoryCache objectForKey:hash];
-     if([data isKindOfClass:[UIImage class]]){
-         return data;
-     }
-     return nil;
+    if(image && url.absoluteString.length>0){
+        [self storeMemoryCacheWithImage:image forHash:url.absoluteString.MD5Hash];
+    }
 }
 
 - (void)storeMemoryCacheWithImage:(UIImage*)image forHash:(NSString*)hash
@@ -317,12 +286,54 @@ static NSString *_sharedCacheDirectoryPath = nil;
         
         if(image){
             if(storeMemoryCache){
-                [self storeMemoryCacheWithImage:image forHash:url.absoluteString.MD5Hash];
+                [self storeMemoryCacheWithImage:image forURL:url];
             }
             return image;
         }
     }
     return nil;
+}
+
+#pragma mark- wrapper
+
++ (void)limitNumberOfCacheFiles:(NSInteger)numberOfCacheFiles
+{
+    [self.manager limitNumberOfCacheFiles:numberOfCacheFiles];
+}
+
++ (void)removeCacheForURL:(NSURL *)url
+{
+    [self.manager removeCacheForURL:url];
+}
+
++ (void)removeCacheDirectory
+{
+    [self.manager removeCacheDirectory];
+}
+
++ (void)storeData:(NSData *)data forURL:(NSURL *)url storeMemoryCache:(BOOL)storeMemoryCache
+{
+    [self.manager storeData:data forURL:url storeMemoryCache:storeMemoryCache];
+}
+
++ (NSData*)localCachedDataWithURL:(NSURL*)url
+{
+    return [self.manager localCachedDataWithURL:url];
+}
+
++ (NSData*)dataWithURL:(NSURL*)url storeMemoryCache:(BOOL)storeMemoryCache
+{
+    return [self.manager dataWithURL:url storeMemoryCache:storeMemoryCache];
+}
+
++ (void)storeMemoryCacheWithImage:(UIImage*)image forURL:(NSURL*)url
+{
+    [self.manager storeMemoryCacheWithImage:image forURL:url];
+}
+
++ (UIImage*)imageWithURL:(NSURL*)url storeMemoryCache:(BOOL)storeMemoryCache
+{
+    return [self.manager imageWithURL:url storeMemoryCache:storeMemoryCache];
 }
 
 @end
@@ -365,6 +376,11 @@ static NSString *_sharedCacheDirectoryPath = nil;
 - (NSDate*)fileModificationDate
 {
     return [_fileAttributes fileModificationDate];
+}
+
+- (NSString*)description
+{
+    return self.filePath;
 }
 
 @end

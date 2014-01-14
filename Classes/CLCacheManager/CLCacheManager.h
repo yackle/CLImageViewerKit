@@ -10,20 +10,36 @@
 
 @interface CLCacheManager : NSObject
 
-+ (void)removeCacheDirectory;
-+ (void)limitNumberOfCacheFiles:(NSInteger)numberOfCacheFiles;
+@property (nonatomic, readonly) NSString *identifier;
 
-+ (NSData*)localCachedDataWithURL:(NSURL*)url;
++ (CLCacheManager*)defaultManager;
++ (CLCacheManager*)managerWithIdentifier:(NSString*)identifier;
+
+
++ (void)limitNumberOfCacheFiles:(NSInteger)numberOfCacheFiles;
+- (void)limitNumberOfCacheFiles:(NSInteger)numberOfCacheFiles;
+
 + (void)removeCacheForURL:(NSURL*)url;
+- (void)removeCacheForURL:(NSURL*)url;
+
++ (void)removeCacheDirectory;
+- (void)removeCacheDirectory;
 
 // NSData caching
 + (void)storeData:(NSData*)data forURL:(NSURL*)url storeMemoryCache:(BOOL)storeMemoryCache;
-+ (NSData*)dataWithURL:(NSURL*)url;
+- (void)storeData:(NSData*)data forURL:(NSURL*)url storeMemoryCache:(BOOL)storeMemoryCache;
+
++ (NSData*)localCachedDataWithURL:(NSURL*)url;
+- (NSData*)localCachedDataWithURL:(NSURL*)url;
+
 + (NSData*)dataWithURL:(NSURL*)url storeMemoryCache:(BOOL)storeMemoryCache;
+- (NSData*)dataWithURL:(NSURL*)url storeMemoryCache:(BOOL)storeMemoryCache;
 
 // UIImage caching
 + (void)storeMemoryCacheWithImage:(UIImage*)image forURL:(NSURL*)url;
-+ (UIImage*)imageWithURL:(NSURL*)url;
+- (void)storeMemoryCacheWithImage:(UIImage*)image forURL:(NSURL*)url;
+
 + (UIImage*)imageWithURL:(NSURL*)url storeMemoryCache:(BOOL)storeMemoryCache;
+- (UIImage*)imageWithURL:(NSURL*)url storeMemoryCache:(BOOL)storeMemoryCache;
 
 @end
