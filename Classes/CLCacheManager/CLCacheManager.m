@@ -191,7 +191,7 @@
 - (void)removeCacheDirectory
 {
     [_memoryCache removeAllObjects];
-    [[NSFileManager defaultManager] removeItemAtPath:_cacheDirectoryPath error:nil];
+    [[NSFileManager defaultManager] removeItemAtPath:[self _cacheDirectory] error:nil];
     
     _cacheDirectoryPath = nil;
 }
