@@ -252,6 +252,19 @@
     return [self _cachedDataWithHash:url.absoluteString.MD5Hash storeMemoryCache:storeMemoryCache];
 }
 
+- (BOOL)existsDataForURL:(NSURL*)url
+{
+    if(url.absoluteString.length>0){
+        NSString *path = [self _pathForHash:url.absoluteString.MD5Hash];
+        
+        BOOL isDirectory = YES;
+        BOOL exists = [[NSFileManager defaultManager] fileExistsAtPath:path isDirectory:&isDirectory];
+        
+        return (exists && !isDirectory);
+    }
+    return NO;
+}
+
 #pragma mark- UIImage caching
 
 - (void)storeMemoryCacheWithImage:(UIImage*)image forURL:(NSURL*)url
@@ -334,6 +347,11 @@
 + (UIImage*)imageWithURL:(NSURL*)url storeMemoryCache:(BOOL)storeMemoryCache
 {
     return [self.manager imageWithURL:url storeMemoryCache:storeMemoryCache];
+}
+
++ (BOOL)existsDataForURL:(NSURL*)url
+{
+    return [self.manager existsDataForURL:url];
 }
 
 @end

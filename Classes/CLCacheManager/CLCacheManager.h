@@ -35,6 +35,9 @@
 + (NSData*)dataWithURL:(NSURL*)url storeMemoryCache:(BOOL)storeMemoryCache;
 - (NSData*)dataWithURL:(NSURL*)url storeMemoryCache:(BOOL)storeMemoryCache;
 
++ (BOOL)existsDataForURL:(NSURL*)url;
+- (BOOL)existsDataForURL:(NSURL*)url;
+
 // UIImage caching
 + (void)storeMemoryCacheWithImage:(UIImage*)image forURL:(NSURL*)url;
 - (void)storeMemoryCacheWithImage:(UIImage*)image forURL:(NSURL*)url;
