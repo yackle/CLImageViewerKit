@@ -14,8 +14,6 @@
 
 @implementation CLZoomingImageView
 {
-    UIImageView *_imageView;
-    
     UIScrollView *_scrollView;
     UIView *_containerView;
 }
@@ -53,6 +51,11 @@
 
 #pragma mark- Properties
 
+- (UIScrollView*)scrollView
+{
+    return _scrollView;
+}
+
 - (UIImage*)image
 {
     return _imageView.image;
@@ -60,19 +63,24 @@
 
 - (void)setImage:(UIImage *)image
 {
-    if(_imageView==nil){
+    if(self.imageView==nil){
         self.imageView = [UIImageView new];
+        self.imageView.clipsToBounds = YES;
     }
-    _imageView.image = image;
+    self.imageView.image = image;
     
-    CGFloat scale = [[UIScreen mainScreen] scale];
-    _imageView.bounds = CGRectMake(0, 0, image.size.width / scale, image.size.height / scale);
+    CGSize size = (self.imageView.image) ? self.imageView.image.size : _containerView.frame.size;
+    CGFloat ratio = MIN(_scrollView.frame.size.width / size.width, _scrollView.frame.size.height / size.height);
+    CGFloat W = ratio * size.width;
+    CGFloat H = ratio * size.height;
+    self.imageView.frame = CGRectMake(0, 0, W, H);
     
     _scrollView.zoomScale = 1;
     _scrollView.contentOffset = CGPointZero;
     _containerView.bounds = _imageView.bounds;
     
     [self resetZoomScale];
+    _scrollView.zoomScale  = _scrollView.minimumZoomScale;
     [self scrollViewDidZoom:_scrollView];
 }
 
@@ -91,6 +99,7 @@
         _containerView.bounds = _imageView.bounds;
         
         [self resetZoomScale];
+        _scrollView.zoomScale  = _scrollView.minimumZoomScale;
         [self scrollViewDidZoom:_scrollView];
     }
 }
@@ -122,8 +131,8 @@
 
 - (void)resetZoomScale
 {
-    CGFloat Rw = _scrollView.frame.size.width / _imageView.frame.size.width;
-    CGFloat Rh = _scrollView.frame.size.height / _imageView.frame.size.height;
+    CGFloat Rw = _scrollView.frame.size.width / self.imageView.frame.size.width;
+    CGFloat Rh = _scrollView.frame.size.height / self.imageView.frame.size.height;
     
     //CGFloat scale = [[UIScreen mainScreen] scale];
     CGFloat scale = 1;
