@@ -76,4 +76,18 @@ Pod::Spec.new do |s|
     a.source_files = 'Classes/CLColorPickerView/*.{h,m}'
     a.dependency 'CLImageViewerKit/UIViewFrame'
   end
+  
+  
+  
+  s.subspec 'CLImagePicker' do |a|
+    a.source_files = 'Classes/CLImagePicker/**/*.{h,m}'
+    a.public_header_files = 'Classes/CLImagePicker/*/*.h'
+    a.resources = 'Classes/CLImagePicker/**/*.xib', 'Classes/CLImagePicker/**/*.bundle'
+    a.dependency 'CLImageViewerKit/UIViewFrame'
+    a.dependency 'CLImageViewerKit/UIImageUtility'
+    a.dependency 'CLImageViewerKit/CLZoomingImageView'
+    a.dependency 'CLImageViewerKit/CLCacheManager'
+    a.dependency 'CLImageEditor'
+  end
+  
 end

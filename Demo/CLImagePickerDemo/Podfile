@@ -1,0 +1,5 @@
+
+platform :ios, '7.0'
+
+pod 'CLImageViewerKit/CLImagePicker', :path => '../../'
+pod 'CLImageEditor', :git => 'https://github.com/yackle/CLImageEditor', :branch => "develop"
