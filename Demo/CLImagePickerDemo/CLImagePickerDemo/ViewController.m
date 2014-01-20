@@ -8,7 +8,7 @@
 
 #import "ViewController.h"
 
-#import "CLImagePickerManager.h"
+#import <CLImagePickerManager.h>
 
 @interface ViewController ()
 <CLImagePickerManagerDelegate, CLImageViewerControllerDelegate, UIImagePickerControllerDelegate>
