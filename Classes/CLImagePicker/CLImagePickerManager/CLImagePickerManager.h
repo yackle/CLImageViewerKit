@@ -24,7 +24,7 @@
 - (UIImage*)fullScreenImageAtIndex:(NSUInteger)index;
 
 - (void)showImageViewerInViewController:(UIViewController<CLImageViewerControllerDelegate>*)controller withIndex:(NSUInteger)index;
-//- (void)removeImageAtIndex:(NSUInteger)index;
+- (void)showImageViewerInWindowWithDelegate:(id<CLImageViewerControllerDelegate>)delegate index:(NSUInteger)index;
 
 @end
 

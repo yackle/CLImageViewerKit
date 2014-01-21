@@ -27,6 +27,7 @@ NSString * const CLZoomingImageCellReuseIdentifier = @"ZoomingImageCell";
 @implementation CLImageViewerController
 {
     void(^_removeImageBlock)();
+    UIViewController *_retainedSelf;
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -95,8 +96,21 @@ NSString * const CLZoomingImageCellReuseIdentifier = @"ZoomingImageCell";
     [controller addChildViewController:self];
     [self didMoveToParentViewController:controller];
     
-    self.view.frame = controller.view.bounds;
-    [controller.view addSubview:self.view];
+    [self showInView:controller.view withIndex:index];
+}
+
+- (void)showInWindowWithIndex:(NSInteger)index
+{
+    _retainedSelf = self;
+    
+    UIWindow *window = [[[UIApplication sharedApplication] delegate] window];
+    [self showInView:window withIndex:index];
+}
+
+- (void)showInView:(UIView*)view withIndex:(NSInteger)index
+{
+    self.view.frame = view.bounds;
+    [view addSubview:self.view];
     
     [_collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:index inSection:0] atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally animated:NO];
     self.currentPageIndex = index;
@@ -211,6 +225,8 @@ NSString * const CLZoomingImageCellReuseIdentifier = @"ZoomingImageCell";
                      completion:^(BOOL finished) {
                          [self.view removeFromSuperview];
                          [self removeFromParentViewController];
+                         
+                         _retainedSelf = nil;
                          
                          if([self.delegate respondsToSelector:@selector(imageViewerController:didDismissWithIndex:)]){
                              [self.delegate imageViewerController:self didDismissWithIndex:self.currentPageIndex];

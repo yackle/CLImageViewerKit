@@ -249,6 +249,19 @@ static __weak id _sharedInstance = nil;
     }
 }
 
+- (void)showImageViewerInWindowWithDelegate:(id<CLImageViewerControllerDelegate>)delegate index:(NSUInteger)index
+{
+    if(_selectedURLs.count>0){
+        NSString *nibName = NSLocalizedStringWithDefaultValue(@"CLImageViewerController_NibName", nil, [CLImagePickerBundle bundle], @"CLImageViewerController", @"");
+        
+        CLImageViewerController *viewer = [[CLImageViewerController alloc] initWithNibName:nibName bundle:nil];
+        viewer.dataSource = self;
+        viewer.delegate = delegate;
+        
+        [viewer showInWindowWithIndex:index];
+    }
+}
+
 #pragma mark DataSource
 
 - (NSInteger)imageViewerControllerNumberOfImages:(CLImageViewerController*)viewer

@@ -12,6 +12,7 @@
 @interface CLImagePickerBundle()
 @property (nonatomic, weak) id<CLImagePickerBundleDelegate> delegate;
 @property (nonatomic, strong) NSString *bundleName;
+@property (nonatomic, strong) UIColor *tintColor;
 @end
 
 @implementation CLImagePickerBundle
@@ -86,6 +87,7 @@ static id _sharedInstance = nil;
     if([self.instance.delegate respondsToSelector:@selector(imageEditorForImagePicker)]){
         return [self.instance.delegate imageEditorForImagePicker];
     }
+    
     return [CLImageEditor new];
 }
 

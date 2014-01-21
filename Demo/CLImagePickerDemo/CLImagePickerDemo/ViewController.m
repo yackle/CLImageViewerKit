@@ -11,7 +11,7 @@
 #import <CLImagePickerManager.h>
 
 @interface ViewController ()
-<CLImagePickerManagerDelegate, CLImageViewerControllerDelegate, UIImagePickerControllerDelegate>
+<CLImagePickerManagerDelegate, CLImageViewerControllerDelegate>
 @end
 
 @implementation ViewController

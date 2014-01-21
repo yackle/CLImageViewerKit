@@ -25,6 +25,8 @@
 @property (nonatomic, weak) id<CLImageViewerControllerDelegate> delegate;
 
 - (void)showInViewController:(UIViewController*)controller withIndex:(NSInteger)index;
+- (void)showInWindowWithIndex:(NSInteger)index;
+
 - (void)dismissFromParentViewController;
 
 - (void)removeImageAtIndex:(NSInteger)index;

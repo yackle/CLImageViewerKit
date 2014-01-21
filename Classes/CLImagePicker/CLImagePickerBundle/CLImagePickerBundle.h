@@ -15,7 +15,6 @@
 + (void)setDelegate:(id<CLImagePickerBundleDelegate>)delegate;
 + (void)setBundleName:(NSString*)bundleName;
 
-
 + (NSString*)bundleName;
 + (NSBundle*)bundle;
 + (UIImage*)imageNamed:(NSString*)path;
