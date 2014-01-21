@@ -7,6 +7,8 @@
 
 #import "CLAssetCell.h"
 
+#import "CLImagePickerBundle.h"
+
 @implementation CLAssetCell
 {
     
@@ -40,6 +42,13 @@
 - (IBAction)pushedSelectBtn:(id)sender
 {
     [self.delegate cellDidPushSelectButton:self];
+    
+    UIButton *btn = sender;
+    CAAnimation *animation = [CLImagePickerBundle selectButtonAnimation:btn.selected];
+    
+    [CATransaction begin];
+    [btn.layer addAnimation:animation forKey:nil];
+    [CATransaction commit];
 }
 
 @end

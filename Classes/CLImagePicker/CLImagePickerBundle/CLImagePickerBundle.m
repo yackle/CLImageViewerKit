@@ -89,4 +89,45 @@ static id _sharedInstance = nil;
     return [CLImageEditor new];
 }
 
++ (CAAnimation*)selectButtonAnimation:(BOOL)selected
+{
+    if([self.instance.delegate respondsToSelector:@selector(selectButtonAnimation:)]){
+        return [self.instance.delegate selectButtonAnimation:selected];
+    }
+    
+    // default animation
+    CAKeyframeAnimation *scaleAnimation = [CAKeyframeAnimation animationWithKeyPath:@"transform"];
+    
+    CGFloat scale1 = (selected) ? 1.2 : 0.8;
+    CGFloat scale2 = (selected) ? 0.85 : 1.1;
+    
+    CATransform3D startScale = CATransform3DIdentity;
+    CATransform3D overshootScale1 = CATransform3DMakeScale(scale1, scale1, 1);
+    CATransform3D overshootScale2 = CATransform3DMakeScale(scale2, scale2, 1);
+    CATransform3D endingScale = CATransform3DIdentity;
+    
+    NSMutableArray *values = [NSMutableArray arrayWithObject:[NSValue valueWithCATransform3D:startScale]];
+    NSMutableArray *keyTimes = [NSMutableArray arrayWithObject:@0.0f];
+    NSMutableArray *timingFunctions = [NSMutableArray arrayWithObject:[CAMediaTimingFunction functionWithControlPoints:0.2 :0.0 :0.3 :1.0]];
+    
+    [values addObject:[NSValue valueWithCATransform3D:overshootScale1]];
+    [keyTimes addObject:@0.4f];
+    [timingFunctions addObject:[CAMediaTimingFunction functionWithControlPoints:0.7 :0.0 :0.8 :1.0]];
+    
+    [values addObject:[NSValue valueWithCATransform3D:overshootScale2]];
+    [keyTimes addObject:@0.7f];
+    [timingFunctions addObject:[CAMediaTimingFunction functionWithControlPoints:0.8 :0.0 :0.9 :1.0]];
+    
+    [values addObject:[NSValue valueWithCATransform3D:endingScale]];
+    [keyTimes addObject:@1.0f];
+    [timingFunctions addObject:[CAMediaTimingFunction functionWithControlPoints:0.6 :0.0 :0.9 :1.0]];
+    
+    scaleAnimation.values = values;
+    scaleAnimation.keyTimes = keyTimes;
+    scaleAnimation.timingFunctions = timingFunctions;
+    scaleAnimation.duration = 0.3;
+    
+    return scaleAnimation;
+}
+
 @end

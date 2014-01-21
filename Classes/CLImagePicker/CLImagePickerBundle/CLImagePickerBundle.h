@@ -21,11 +21,14 @@
 + (UIImage*)imageNamed:(NSString*)path;
 + (CLImageEditor*)imageEditor;
 
++ (CAAnimation*)selectButtonAnimation:(BOOL)selected;
+
 @end
 
 
 @protocol CLImagePickerBundleDelegate <NSObject>
 @optional
 - (CLImageEditor*)imageEditorForImagePicker;
+- (CAAnimation*)selectButtonAnimation:(BOOL)selected;
 
 @end

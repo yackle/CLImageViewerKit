@@ -303,6 +303,13 @@ NSString * const CLZoomingImageCellReuseIdentifier = @"ZoomingImageCell";
         }
     }
     _selectBtn.selected = !_selectBtn.selected;
+    
+    UIButton *btn = sender;
+    CAAnimation *animation = [CLImagePickerBundle selectButtonAnimation:btn.selected];
+    
+    [CATransaction begin];
+    [btn.layer addAnimation:animation forKey:nil];
+    [CATransaction commit];
 }
 
 - (IBAction)pushedEditBtn:(id)sender
