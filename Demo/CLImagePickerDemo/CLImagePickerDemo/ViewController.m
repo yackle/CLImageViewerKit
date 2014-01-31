@@ -115,6 +115,8 @@
         NSURL *url = [_manager fullScreenURLAtIndex:index];
         
         [imageView setDefaultLoadingView];
+        imageView.loadingView.backgroundColor = [UIColor whiteColor];
+        
         [imageView loadWithURL:url completionBlock:^(UIImage *image, NSURL *url, NSError *error) {
             if(error==nil && image){
                 [_manager setImage:image forSelectedURL:url];

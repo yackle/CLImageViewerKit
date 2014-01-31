@@ -192,24 +192,30 @@ const char* const kCLLoadingViewKey   = "CL_URLDownload_LoadingViewKey";
     // It could be more better by replacing with a method that has delegates like a progress.
     [UIImageView dataWithContentsOfURL:self.url
                        completionBlock:^(NSURL *url, NSData *data, NSError *error){
-                           UIImage *image = [UIImage imageWithData:data];
-                           
-                           if([url isEqual:self.url]){
-                               if(error){
-                                   self.loadingState = UIImageViewURLDownloadStateFailed;
-                               }
-                               else{
-                                   [self performSelectorOnMainThread:@selector(setImage:) withObject:image waitUntilDone:NO];
-                                   self.loadingState = UIImageViewURLDownloadStateLoaded;
-                               }
-                               [self hideLoadingView];
-                           }
+                           UIImage *image = [self didFinishDownloadWithData:data forURL:url error:error];
                            
                            if(handler){
                                handler(image, url, error);
                            }
                        }
      ];
+}
+
+- (UIImage*)didFinishDownloadWithData:(NSData *)data forURL:(NSURL *)url error:(NSError *)error
+{
+    UIImage *image = [UIImage imageWithData:data];
+    
+    if([url isEqual:self.url]){
+        if(error){
+            self.loadingState = UIImageViewURLDownloadStateFailed;
+        }
+        else{
+            [self performSelectorOnMainThread:@selector(setImage:) withObject:image waitUntilDone:NO];
+            self.loadingState = UIImageViewURLDownloadStateLoaded;
+        }
+        [self hideLoadingView];
+    }
+    return image;
 }
 
 -(void)setImage:(UIImage *)image forURL:(NSURL *)url

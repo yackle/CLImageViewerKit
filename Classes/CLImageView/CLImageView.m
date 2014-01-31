@@ -14,7 +14,7 @@
 #pragma mark- UIImageView+URLDownload's private methods
 
 @interface UIImageView (URLDownloadPrivate)
-- (void)didFinishDownloadWithData:(NSData*)data forURL:(NSURL*)url error:(NSError*)error;
+- (UIImage*)didFinishDownloadWithData:(NSData*)data forURL:(NSURL*)url error:(NSError*)error;
 - (void)setImage:(UIImage *)image forURL:(NSURL *)url;
 @end
 
@@ -61,12 +61,12 @@
     [super load];
 }
 
-- (void)didFinishDownloadWithData:(NSData *)data forURL:(NSURL *)url error:(NSError *)error
+- (UIImage*)didFinishDownloadWithData:(NSData *)data forURL:(NSURL *)url error:(NSError *)error
 {
     if(self.useLocalCache){
         [CLCacheManager storeData:data forURL:url storeMemoryCache:NO];
     }
-    [super didFinishDownloadWithData:data forURL:url error:error];
+    return [super didFinishDownloadWithData:data forURL:url error:error];
 }
 
 - (void)setImage:(UIImage *)image forURL:(NSURL *)url
