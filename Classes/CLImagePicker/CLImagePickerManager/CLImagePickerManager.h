@@ -23,6 +23,12 @@
 - (UIImage*)thumnailImageAtIndex:(NSUInteger)index;
 - (UIImage*)fullScreenImageAtIndex:(NSUInteger)index;
 
+- (NSURL*)thumnailURLAtIndex:(NSUInteger)index;
+- (NSURL*)fullScreenURLAtIndex:(NSUInteger)index;
+
+- (void)selectImage:(UIImage*)image forURL:(NSURL*)url;
+- (void)setImage:(UIImage*)image forSelectedURL:(NSURL*)url;
+
 - (void)showImageViewerInViewController:(UIViewController<CLImageViewerControllerDelegate>*)controller withIndex:(NSUInteger)index;
 - (void)showImageViewerInWindowWithDelegate:(id<CLImageViewerControllerDelegate>)delegate index:(NSUInteger)index;
 

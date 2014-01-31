@@ -81,6 +81,89 @@ static __weak id _sharedInstance = nil;
     return _selectedURLs.count;
 }
 
+#pragma mark- Instance method
+
+- (UIImage*)thumnailImageAtIndex:(NSUInteger)index
+{
+    NSURL *url = [self thumnailURLAtIndex:index];
+    if(url){
+        return [self cachedImageWithURL:url];
+    }
+    return nil;
+}
+
+- (UIImage*)fullScreenImageAtIndex:(NSUInteger)index
+{
+    NSURL *url = [self fullScreenURLAtIndex:index];
+    if(url){
+        return [self cachedImageWithURL:url];
+    }
+    return nil;
+}
+
+- (NSURL*)thumnailURLAtIndex:(NSUInteger)index
+{
+    if(index<_selectedURLs.count){
+        NSURL *url = _selectedURLs[index];
+        NSURL *edittedThumnailURL = [self thumnailURLForURL:[self edittedImageURLForURL:url]];
+        if([self existsImageForURL:edittedThumnailURL]){
+            return edittedThumnailURL;
+        }
+        return [self thumnailURLForURL:url];
+    }
+    return nil;
+}
+
+- (NSURL*)fullScreenURLAtIndex:(NSUInteger)index
+{
+    if(index<_selectedURLs.count){
+        NSURL *url = _selectedURLs[index];
+        NSURL *edittedImageURL = [self edittedImageURLForURL:url];
+        if([self existsImageForURL:edittedImageURL]){
+            return edittedImageURL;
+        }
+        return url;
+    }
+    return nil;
+}
+
+- (void)selectImage:(UIImage*)image forURL:(NSURL*)url
+{
+    if(url.absoluteString.length<=0){ return; }
+    
+    if(image && ![self existsImageForURL:url]){
+        [self cacheImage:image forURL:url];
+    }
+    [_selectedURLs addObject:url];
+}
+
+- (void)setImage:(UIImage*)image forSelectedURL:(NSURL*)url
+{
+    if(image && [_selectedURLs containsObject:url]){
+        [self cacheImage:image forURL:url];
+    }
+}
+
+#pragma mark- Get Image
+
+- (UIImage*)thumnailImageForURL:(NSURL*)url
+{
+    NSURL *edittedThumnailURL = [self thumnailURLForURL:[self edittedImageURLForURL:url]];
+    if([self existsImageForURL:edittedThumnailURL]){
+        return [self cachedImageWithURL:edittedThumnailURL];
+    }
+    return [self cachedImageWithURL:[self thumnailURLForURL:url]];
+}
+
+- (UIImage*)fullScreenImageForURL:(NSURL*)url
+{
+    NSURL *edittedImageURL = [self edittedImageURLForURL:url];
+    if([self existsImageForURL:edittedImageURL]){
+        return [self cachedImageWithURL:edittedImageURL];
+    }
+    return [self cachedImageWithURL:url];
+}
+
 #pragma mark- Caching
 
 - (NSURL*)edittedImageURLForURL:(NSURL*)url
@@ -123,42 +206,6 @@ static __weak id _sharedInstance = nil;
 - (UIImage*)cachedImageWithURL:(NSURL*)url
 {
     return [_cacheManager imageWithURL:url storeMemoryCache:NO];
-}
-
-#pragma mark- Get Image
-
-- (UIImage*)thumnailImageForURL:(NSURL*)url
-{
-    NSURL *edittedThumnailURL = [self thumnailURLForURL:[self edittedImageURLForURL:url]];
-    if([self existsImageForURL:edittedThumnailURL]){
-        return [self cachedImageWithURL:edittedThumnailURL];
-    }
-    return [self cachedImageWithURL:[self thumnailURLForURL:url]];
-}
-
-- (UIImage*)fullScreenImageForURL:(NSURL*)url
-{
-    NSURL *edittedImageURL = [self edittedImageURLForURL:url];
-    if([self existsImageForURL:edittedImageURL]){
-        return [self cachedImageWithURL:edittedImageURL];
-    }
-    return [self cachedImageWithURL:url];
-}
-
-- (UIImage*)thumnailImageAtIndex:(NSUInteger)index
-{
-    if(index<_selectedURLs.count){
-        return [self thumnailImageForURL:[_selectedURLs objectAtIndex:index]];
-    }
-    return nil;
-}
-
-- (UIImage*)fullScreenImageAtIndex:(NSUInteger)index
-{
-    if(index<_selectedURLs.count){
-        return [self fullScreenImageForURL:[_selectedURLs objectAtIndex:index]];
-    }
-    return nil;
 }
 
 #pragma mark- CLImagePickerController

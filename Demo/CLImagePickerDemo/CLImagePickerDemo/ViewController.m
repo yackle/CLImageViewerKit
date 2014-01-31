@@ -9,6 +9,7 @@
 #import "ViewController.h"
 
 #import <CLImagePickerManager.h>
+#import <UIImageView+URLDownload.h>
 
 @interface ViewController ()
 <CLImagePickerManagerDelegate, CLImageViewerControllerDelegate>
@@ -27,6 +28,10 @@
     
     _manager = [CLImagePickerManager managerWithDelegate:self];
     _thumnails = [NSMutableArray array];
+    
+    [_manager selectImage:[UIImage imageNamed:@"default.jpg"] forURL:[NSURL URLWithString:@"test://testetestse"]];
+    [_manager selectImage:nil forURL:[NSURL URLWithString:@"http://placekitten.com/1000/1000"]];
+    [self resetImageViews];
 }
 
 - (void)didReceiveMemoryWarning
@@ -102,6 +107,20 @@
         return _thumnails[index];
     }
     return nil;
+}
+
+- (void)imageViewerController:(CLImageViewerController *)viewer willDisplayImageView:(UIImageView *)imageView forIndex:(NSInteger)index
+{
+    if(imageView.image==nil){
+        NSURL *url = [_manager fullScreenURLAtIndex:index];
+        
+        [imageView setDefaultLoadingView];
+        [imageView loadWithURL:url completionBlock:^(UIImage *image, NSURL *url, NSError *error) {
+            if(error==nil && image){
+                [_manager setImage:image forSelectedURL:url];
+            }
+        }];
+    }
 }
 
 - (void)imageViewerController:(CLImageViewerController*)viewer willAppearWithIndex:(NSInteger)index

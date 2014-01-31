@@ -145,7 +145,7 @@ NSString * const CLZoomingImageCellReuseIdentifier = @"ZoomingImageCell";
                          _collectionView.alpha = 1;
                          
                          if(animateView){
-                             CGSize size = animateView.image.size;
+                             CGSize size = (animateView.image) ? animateView.image.size : self.view.frame.size;
                              CGFloat ratio = MIN(self.view.frame.size.width / size.width, self.view.frame.size.height / size.height);
                              CGFloat W = ratio * size.width;
                              CGFloat H = ratio * size.height;
@@ -401,13 +401,21 @@ NSString * const CLZoomingImageCellReuseIdentifier = @"ZoomingImageCell";
         CLZoomingImageCell *_cell = (CLZoomingImageCell*)cell;
         _cell.thumnailImage = [self.dataSource imageViewerController:self thumnailImageAtIndex:indexPath.item];
         
-        [_foregroundView addGestureRecognizer:_cell.scrollView.panGestureRecognizer];
-        [_foregroundView addGestureRecognizer:_cell.scrollView.pinchGestureRecognizer];
+        if(_cell.scrollView.panGestureRecognizer){
+            [_foregroundView addGestureRecognizer:_cell.scrollView.panGestureRecognizer];
+        }
+        if(_cell.scrollView.pinchGestureRecognizer){
+            [_foregroundView addGestureRecognizer:_cell.scrollView.pinchGestureRecognizer];
+        }
         
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
             UIImage *image = [self.dataSource imageViewerController:self fullScreenImageAtIndex:indexPath.item];
             dispatch_async(dispatch_get_main_queue(), ^{
                 _cell.fullScreenImage = image;
+                
+                if([self.delegate respondsToSelector:@selector(imageViewerController:willDisplayImageView:forIndex:)]){
+                    [self.delegate imageViewerController:self willDisplayImageView:_cell.imageView forIndex:indexPath.item];
+                }
             });
         });
     }

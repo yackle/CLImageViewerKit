@@ -49,6 +49,11 @@
     [self addSubview:_scrollView];
 }
 
+- (void)dealloc
+{
+    [self.imageView removeObserver:self forKeyPath:@"image"];
+}
+
 #pragma mark- Properties
 
 - (UIScrollView*)scrollView
@@ -68,29 +73,18 @@
         self.imageView.clipsToBounds = YES;
     }
     self.imageView.image = image;
-    
-    CGSize size = (self.imageView.image) ? self.imageView.image.size : _containerView.frame.size;
-    CGFloat ratio = MIN(_scrollView.frame.size.width / size.width, _scrollView.frame.size.height / size.height);
-    CGFloat W = ratio * size.width;
-    CGFloat H = ratio * size.height;
-    self.imageView.frame = CGRectMake(0, 0, W, H);
-    
-    _scrollView.zoomScale = 1;
-    _scrollView.contentOffset = CGPointZero;
-    _containerView.bounds = _imageView.bounds;
-    
-    [self resetZoomScale];
-    _scrollView.zoomScale  = _scrollView.minimumZoomScale;
-    [self scrollViewDidZoom:_scrollView];
 }
 
 - (void)setImageView:(UIImageView *)imageView
 {
     if(imageView != _imageView){
+        [_imageView removeObserver:self forKeyPath:@"image"];
         [_imageView removeFromSuperview];
         
         _imageView = imageView;
         _imageView.frame = _imageView.bounds;
+        
+        [_imageView addObserver:self forKeyPath:@"image" options:0 context:nil];
         
         [_containerView addSubview:_imageView];
         
@@ -107,6 +101,32 @@
 - (BOOL)isViewing
 {
     return (_scrollView.zoomScale != _scrollView.minimumZoomScale);
+}
+
+#pragma mark- observe
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+    if(object==self.imageView){
+        [self imageDidChange];
+    }
+}
+
+- (void)imageDidChange
+{
+    CGSize size = (self.imageView.image) ? self.imageView.image.size : self.bounds.size;
+    CGFloat ratio = MIN(_scrollView.frame.size.width / size.width, _scrollView.frame.size.height / size.height);
+    CGFloat W = ratio * size.width;
+    CGFloat H = ratio * size.height;
+    self.imageView.frame = CGRectMake(0, 0, W, H);
+    
+    _scrollView.zoomScale = 1;
+    _scrollView.contentOffset = CGPointZero;
+    _containerView.bounds = _imageView.bounds;
+    
+    [self resetZoomScale];
+    _scrollView.zoomScale  = _scrollView.minimumZoomScale;
+    [self scrollViewDidZoom:_scrollView];
 }
 
 #pragma mark- Scrollview delegate

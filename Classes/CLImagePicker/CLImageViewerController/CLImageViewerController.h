@@ -65,6 +65,8 @@
 
 - (UIImageView*)imageViewerController:(CLImageViewerController*)viewer imageViewAtIndex:(NSInteger)index;
 
+- (void)imageViewerController:(CLImageViewerController*)viewer willDisplayImageView:(UIImageView*)imageView forIndex:(NSInteger)index;
+
 - (void)imageViewerController:(CLImageViewerController*)viewer willAppearWithIndex:(NSInteger)index;
 - (void)imageViewerController:(CLImageViewerController*)viewer didAppearWithIndex:(NSInteger)index;
 - (void)imageViewerController:(CLImageViewerController*)viewer willDismissWithIndex:(NSInteger)index;
