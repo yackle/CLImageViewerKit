@@ -18,6 +18,20 @@ NSString * const CLAssetCellReuseIdentifier = @"AssetCell";
 NSString * const CLAddAssetCellReuseIdentifier = @"AddAssetCell";
 
 
+
+#pragma mark- ExUIImagePickerController
+
+@interface _ExUIImagePickerController : UIImagePickerController
+@end
+
+@implementation _ExUIImagePickerController
+- (BOOL)prefersStatusBarHidden{ return YES; }
+- (UIViewController *)childViewControllerForStatusBarHidden{ return nil; }
+@end
+
+
+#pragma mark- CLImagePickerController
+
 @interface CLImagePickerController ()
 <UICollectionViewDataSource, UICollectionViewDelegate, CLAssetCellDelegate, CLImageViewerControllerDataSource, CLImageViewerControllerDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate>
 @property (nonatomic, assign) BOOL isLibraryInProgress;
@@ -322,12 +336,13 @@ NSString * const CLAddAssetCellReuseIdentifier = @"AddAssetCell";
     if(self.isLibraryInProgress){ return; }
     
     if([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
-        UIImagePickerController *ipc = [UIImagePickerController new];
+        UIImagePickerController *ipc = (UIImagePickerController*)[_ExUIImagePickerController new];
         ipc.allowsEditing = NO;
         ipc.delegate      = self;
         
         ipc.sourceType = UIImagePickerControllerSourceTypeCamera;
         ipc.cameraDevice=UIImagePickerControllerCameraDeviceRear;
+        
         [self presentViewController:ipc animated:YES completion:^{
             [cell.indicatorView startAnimating];
         }];
@@ -338,6 +353,8 @@ NSString * const CLAddAssetCellReuseIdentifier = @"AddAssetCell";
 {
     self.isLibraryInProgress = NO;
     [_collectionView reloadItemsAtIndexPaths:@[[NSIndexPath indexPathForItem:_assets.count inSection:0]]];
+    
+    [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
     [picker dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -362,6 +379,7 @@ NSString * const CLAddAssetCellReuseIdentifier = @"AddAssetCell";
                            }
      ];
     
+    [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
     [picker dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -527,3 +545,4 @@ NSString * const CLAddAssetCellReuseIdentifier = @"AddAssetCell";
 }
 
 @end
+
