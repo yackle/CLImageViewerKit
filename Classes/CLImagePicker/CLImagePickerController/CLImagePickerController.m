@@ -9,15 +9,18 @@
 
 #import "UIView+Frame.h"
 #import "CLCacheManager.h"
+#import "CLAddAssetCell.h"
 #import "CLAssetCell.h"
 #import "CLImagePickerBundle.h"
 #import "CLImageViewerController.h"
 
 NSString * const CLAssetCellReuseIdentifier = @"AssetCell";
+NSString * const CLAddAssetCellReuseIdentifier = @"AddAssetCell";
 
 
 @interface CLImagePickerController ()
-<UICollectionViewDataSource, UICollectionViewDelegate, CLAssetCellDelegate, CLImageViewerControllerDataSource, CLImageViewerControllerDelegate>
+<UICollectionViewDataSource, UICollectionViewDelegate, CLAssetCellDelegate, CLImageViewerControllerDataSource, CLImageViewerControllerDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate>
+@property (nonatomic, assign) BOOL isLibraryInProgress;
 @end
 
 
@@ -45,6 +48,10 @@ NSString * const CLAssetCellReuseIdentifier = @"AssetCell";
     
     NSString *nibName = NSLocalizedStringWithDefaultValue(@"CLAssetCell_NibName", nil, [CLImagePickerBundle bundle], @"CLAssetCell", @"");
     [_collectionView registerNib:[UINib nibWithNibName:nibName bundle:nil] forCellWithReuseIdentifier:CLAssetCellReuseIdentifier];
+    
+    nibName = NSLocalizedStringWithDefaultValue(@"CLAddAssetCell_NibName", nil, [CLImagePickerBundle bundle], @"CLAddAssetCell", @"");
+    [_collectionView registerNib:[UINib nibWithNibName:nibName bundle:nil] forCellWithReuseIdentifier:CLAddAssetCellReuseIdentifier];
+    
     _collectionView.alwaysBounceVertical = YES;
     _collectionView.contentInset = UIEdgeInsetsMake(_navigationBar.bottom, 0, 0, 0);
     _collectionView.allowsMultipleSelection = YES;
@@ -65,6 +72,15 @@ NSString * const CLAssetCellReuseIdentifier = @"AssetCell";
 - (void)setSelectedURLs:(NSArray*)selectedURLs
 {
     _selectedURLs = [[NSMutableOrderedSet alloc] initWithArray:selectedURLs];
+}
+
+- (void)setIsLibraryInProgress:(BOOL)isLibraryInProgress
+{
+    if(isLibraryInProgress != _isLibraryInProgress){
+        _isLibraryInProgress = isLibraryInProgress;
+        _navigationBar.userInteractionEnabled = !isLibraryInProgress;
+        self.navigationController.navigationBar.userInteractionEnabled = !isLibraryInProgress;
+    }
 }
 
 #pragma mark- Caching
@@ -133,6 +149,7 @@ NSString * const CLAssetCellReuseIdentifier = @"AssetCell";
         }
         else{
             [_collectionView performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:YES];
+            [_collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:_assets.count-1 inSection:0] atScrollPosition:UICollectionViewScrollPositionCenteredVertically animated:NO];
         }
     }];
 }
@@ -140,7 +157,8 @@ NSString * const CLAssetCellReuseIdentifier = @"AssetCell";
 - (CLAsset*)assetAtIndex:(NSUInteger)index
 {
     if(index<_assets.count){
-        return _assets[_assets.count - index - 1];
+        return _assets[index];
+        //return _assets[_assets.count - index - 1];
     }
     return nil;
 }
@@ -208,12 +226,17 @@ NSString * const CLAssetCellReuseIdentifier = @"AssetCell";
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
+    if([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+        return _assets.count + 1;
+    }
     return _assets.count;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    UICollectionViewCell *cell = [_collectionView dequeueReusableCellWithReuseIdentifier:CLAssetCellReuseIdentifier forIndexPath:indexPath];
+    NSString *identifier = (indexPath.item<_assets.count) ? CLAssetCellReuseIdentifier : CLAddAssetCellReuseIdentifier;
+    
+    UICollectionViewCell *cell = [_collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
     
     if([cell isKindOfClass:[CLAssetCell class]]){
         CLAsset *asset = [self assetAtIndex:indexPath.item];
@@ -238,7 +261,15 @@ NSString * const CLAssetCellReuseIdentifier = @"AssetCell";
             }
             _cell.selected = selected;
         }
-        
+    }
+    else if([cell isKindOfClass:[CLAddAssetCell class]]){
+        CLAddAssetCell *_cell = (CLAddAssetCell*)cell;
+        if(self.isLibraryInProgress){
+            [_cell.indicatorView startAnimating];
+        }
+        else{
+            [_cell.indicatorView stopAnimating];
+        }
     }
     
     return cell;
@@ -258,18 +289,109 @@ NSString * const CLAssetCellReuseIdentifier = @"AssetCell";
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    //UICollectionViewCell* cell = [collectionView cellForItemAtIndexPath:indexPath];
     [collectionView deselectItemAtIndexPath:indexPath animated:NO];
-    
-    [self showImageViewerWithIndex:indexPath.item];
+    [self showImageViewerWithIndexPath:indexPath];
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    //UICollectionViewCell* cell = [collectionView cellForItemAtIndexPath:indexPath];
     [collectionView selectItemAtIndexPath:indexPath animated:NO scrollPosition:UICollectionViewScrollPositionNone];
+    [self showImageViewerWithIndexPath:indexPath];
+}
+
+- (void)showImageViewerWithIndexPath:(NSIndexPath*)indexPath
+{
+    if(self.isLibraryInProgress){ return; }
     
-    [self showImageViewerWithIndex:indexPath.item];
+    UICollectionViewCell* cell = [_collectionView cellForItemAtIndexPath:indexPath];
+    if([cell isKindOfClass:[CLAssetCell class]]){
+        CLAsset *asset = [self assetAtIndex:indexPath.item];
+        CLAssetCell *_cell = (CLAssetCell*)cell;
+        _cell.image = [asset aspectRatioThumnail];
+        [self showImageViewerWithIndex:indexPath.item];
+    }
+    else if([cell isKindOfClass:[CLAddAssetCell class]]){
+        [self showCameraWithAddAssetCell:(CLAddAssetCell*)cell];
+    }
+}
+
+#pragma mark- UIImagePicker
+
+- (void)showCameraWithAddAssetCell:(CLAddAssetCell*)cell
+{
+    if(self.isLibraryInProgress){ return; }
+    
+    if([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+        UIImagePickerController *ipc = [UIImagePickerController new];
+        ipc.allowsEditing = NO;
+        ipc.delegate      = self;
+        
+        ipc.sourceType = UIImagePickerControllerSourceTypeCamera;
+        ipc.cameraDevice=UIImagePickerControllerCameraDeviceRear;
+        [self presentViewController:ipc animated:YES completion:^{
+            [cell.indicatorView startAnimating];
+        }];
+    }
+}
+
+- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
+{
+    self.isLibraryInProgress = NO;
+    [_collectionView reloadItemsAtIndexPaths:@[[NSIndexPath indexPathForItem:_assets.count inSection:0]]];
+    [picker dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
+{
+    UIImage *image = [info objectForKey:UIImagePickerControllerOriginalImage];
+    NSMutableDictionary *metadata = (NSMutableDictionary *)[info objectForKey:UIImagePickerControllerMediaMetadata];
+    
+    [_library writeImageToSavedPhotosAlbum:image.CGImage
+                                  metadata:metadata
+                           completionBlock:^(NSURL *assetURL, NSError *error) {
+                               if(error==nil){
+                                   [self addNewAssetForAssetURL:assetURL];
+                               }
+                               else{
+                                   UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:error.localizedDescription delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                                   [alert show];
+                                   
+                                   self.isLibraryInProgress = NO;
+                                   [_collectionView reloadItemsAtIndexPaths:@[[NSIndexPath indexPathForItem:_assets.count inSection:0]]];
+                               }
+                           }
+     ];
+    
+    [picker dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)addNewAssetForAssetURL:(NSURL*)assetURL
+{
+    [_library assetForURL:assetURL
+              resultBlock:^(ALAsset *asset){
+                  CLAsset *ast = [[CLAsset alloc] initWithAsset:asset];
+                  [_assets addObject:ast];
+                  [_selectedURLs addObject:ast.assetURL];
+                  [self.delegate imagePickerController:self didTouchOriginalImage:ast.fullScreenImage withAssetURL:ast.assetURL];
+                  
+                  self.isLibraryInProgress = NO;
+                  
+                  [_collectionView performBatchUpdates:^{
+                      [_collectionView insertItemsAtIndexPaths:@[[NSIndexPath indexPathForItem:_assets.count-1 inSection:0]]];
+                   }
+                                            completion:^(BOOL finished) {
+                                                [_collectionView reloadItemsAtIndexPaths:@[[NSIndexPath indexPathForItem:_assets.count inSection:0]]];
+                                            }
+                   ];
+              }
+             failureBlock:^(NSError *error){
+                 UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:error.localizedDescription delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                 [alert show];
+                 
+                 self.isLibraryInProgress = NO;
+                 [_collectionView reloadItemsAtIndexPaths:@[[NSIndexPath indexPathForItem:_assets.count inSection:0]]];
+             }
+     ];
 }
 
 #pragma mark- CLImageViewerController

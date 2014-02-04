@@ -15,6 +15,7 @@
 
 - (NSURL*)assetURL;
 - (UIImage*)thumnail;
+- (UIImage*)aspectRatioThumnail;
 - (UIImage*)fullScreenImage;
 
 @end

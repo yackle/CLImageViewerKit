@@ -28,6 +28,11 @@
 
 - (UIImage*)thumnail
 {
+    return [UIImage imageWithCGImage:[_asset thumbnail]];
+}
+
+- (UIImage*)aspectRatioThumnail
+{
     return [UIImage imageWithCGImage:[_asset aspectRatioThumbnail]];
 }
 
