@@ -90,11 +90,11 @@ NSString * const CLAddAssetCellReuseIdentifier = @"AddAssetCell";
     return asset.fullScreenImage;
 }
 
-- (UIImage*)thumnailForAsset:(CLAsset*)asset
+- (UIImage*)thumnailForAsset:(CLAsset*)asset aspectRatio:(BOOL)aspectRatio
 {
     UIImage *image = [self.delegate imagePickerController:self thumnailImageForAssetURL:asset.assetURL];
     if(image==nil){
-        image = asset.thumnail;
+        image = (aspectRatio) ? asset.aspectRatioThumnail :asset.thumnail;
     }
     return image;
 }
@@ -245,7 +245,7 @@ NSString * const CLAddAssetCellReuseIdentifier = @"AddAssetCell";
         _cell.delegate = self;
         
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-            UIImage *image = [self thumnailForAsset:asset];
+            UIImage *image = [self thumnailForAsset:asset aspectRatio:NO];
             dispatch_async(dispatch_get_main_queue(), ^{
                 _cell.image = image;
             });
@@ -307,7 +307,7 @@ NSString * const CLAddAssetCellReuseIdentifier = @"AddAssetCell";
     if([cell isKindOfClass:[CLAssetCell class]]){
         CLAsset *asset = [self assetAtIndex:indexPath.item];
         CLAssetCell *_cell = (CLAssetCell*)cell;
-        _cell.image = [asset aspectRatioThumnail];
+        _cell.image = [self thumnailForAsset:asset aspectRatio:YES];
         [self showImageViewerWithIndex:indexPath.item];
     }
     else if([cell isKindOfClass:[CLAddAssetCell class]]){
@@ -421,7 +421,7 @@ NSString * const CLAddAssetCellReuseIdentifier = @"AddAssetCell";
 
 - (UIImage*)imageViewerController:(CLImageViewerController*)viewer thumnailImageAtIndex:(NSInteger)index
 {
-    return [self thumnailForAsset:[self assetAtIndex:index]];
+    return [self thumnailForAsset:[self assetAtIndex:index] aspectRatio:YES];
 }
 
 - (UIImage*)imageViewerController:(CLImageViewerController*)viewer fullScreenImageAtIndex:(NSInteger)index
@@ -472,7 +472,7 @@ NSString * const CLAddAssetCellReuseIdentifier = @"AddAssetCell";
     
     CLAssetCell *cell = (CLAssetCell*)[_collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForItem:index inSection:0]];
     if(cell){
-        cell.image = [self thumnailForAsset:[self assetAtIndex:index]];
+        cell.image = [self thumnailForAsset:[self assetAtIndex:index] aspectRatio:NO];
     }
 }
 
