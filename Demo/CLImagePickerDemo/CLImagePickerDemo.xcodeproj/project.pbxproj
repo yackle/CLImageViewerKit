@@ -424,10 +424,12 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "CLImagePickerDemo/CLImagePickerDemo-Prefix.pch";
 				INFOPLIST_FILE = "CLImagePickerDemo/CLImagePickerDemo-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "91162864-E58C-4B1F-9996-E8C8492D08B4";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -442,6 +444,7 @@
 				GCC_PREFIX_HEADER = "CLImagePickerDemo/CLImagePickerDemo-Prefix.pch";
 				INFOPLIST_FILE = "CLImagePickerDemo/CLImagePickerDemo-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "91162864-E58C-4B1F-9996-E8C8492D08B4";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

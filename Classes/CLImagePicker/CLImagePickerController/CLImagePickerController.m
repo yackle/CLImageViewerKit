@@ -97,6 +97,11 @@ NSString * const CLAddAssetCellReuseIdentifier = @"AddAssetCell";
     }
 }
 
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    return UIStatusBarStyleDefault;
+}
+
 #pragma mark- Caching
 
 - (UIImage*)originalImageForAsset:(CLAsset*)asset
@@ -354,7 +359,6 @@ NSString * const CLAddAssetCellReuseIdentifier = @"AddAssetCell";
     self.isLibraryInProgress = NO;
     [_collectionView reloadItemsAtIndexPaths:@[[NSIndexPath indexPathForItem:_assets.count inSection:0]]];
     
-    [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
     [picker dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -379,7 +383,6 @@ NSString * const CLAddAssetCellReuseIdentifier = @"AddAssetCell";
                            }
      ];
     
-    [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
     [picker dismissViewControllerAnimated:YES completion:nil];
 }
 
