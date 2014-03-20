@@ -43,9 +43,6 @@ NSString * const CLZoomingImageCellReuseIdentifier = @"ZoomingImageCell";
 {
     [super viewDidLoad];
     
-    _backgroundView.backgroundColor = self.view.backgroundColor;
-    self.view.backgroundColor = [UIColor clearColor];
-    
     [_collectionView registerClass:[CLZoomingImageCell class] forCellWithReuseIdentifier:CLZoomingImageCellReuseIdentifier];
     _collectionView.alwaysBounceHorizontal = YES;
     _collectionView.allowsMultipleSelection = YES;
@@ -128,9 +125,11 @@ NSString * const CLZoomingImageCellReuseIdentifier = @"ZoomingImageCell";
     
     _collectionView.hidden = (animateView!=nil);
     _collectionView.alpha  = 0;
-    _backgroundView.alpha  = 0;
     _foregroundView.hidden = YES;
     _foregroundView.alpha  = 0;
+    _backgroundView.alpha  = 0;
+    _backgroundView.backgroundColor = self.view.backgroundColor;
+    self.view.backgroundColor = [UIColor clearColor];
     
     if([self.delegate respondsToSelector:@selector(imageViewerController:willAppearWithIndex:)]){
         [self.delegate imageViewerController:self willAppearWithIndex:index];
