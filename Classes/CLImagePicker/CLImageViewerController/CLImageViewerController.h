@@ -23,6 +23,7 @@
 }
 @property (nonatomic, weak) id<CLImageViewerControllerDataSource> dataSource;
 @property (nonatomic, weak) id<CLImageViewerControllerDelegate> delegate;
+@property (nonatomic, readonly) UIView *backgroundView;
 
 - (void)showInViewController:(UIViewController*)controller withIndex:(NSInteger)index;
 - (void)showInWindowWithIndex:(NSInteger)index;

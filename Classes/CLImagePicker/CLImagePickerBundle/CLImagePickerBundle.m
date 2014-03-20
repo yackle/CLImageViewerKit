@@ -8,6 +8,7 @@
 #import "CLImagePickerBundle.h"
 
 #import <CLImageEditor.h>
+#import <CLImageViewerController.h>
 
 @interface CLImagePickerBundle()
 @property (nonatomic, weak) id<CLImagePickerBundleDelegate> delegate;
@@ -87,8 +88,15 @@ static id _sharedInstance = nil;
     if([self.instance.delegate respondsToSelector:@selector(imageEditorForImagePicker)]){
         return [self.instance.delegate imageEditorForImagePicker];
     }
-    
     return [CLImageEditor new];
+}
+
++ (CLImageViewerController*)imageViewer
+{
+    if([self.instance.delegate respondsToSelector:@selector(imageViewerForImagePicker)]){
+        return [self.instance.delegate imageViewerForImagePicker];
+    }
+    return [CLImageViewerController new];
 }
 
 + (CAAnimation*)selectButtonAnimation:(BOOL)selected

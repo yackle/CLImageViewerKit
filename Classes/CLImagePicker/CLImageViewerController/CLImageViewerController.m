@@ -64,6 +64,11 @@ NSString * const CLZoomingImageCellReuseIdentifier = @"ZoomingImageCell";
     [super didReceiveMemoryWarning];
 }
 
+- (UIView*)backgroundView
+{
+    return _backgroundView;
+}
+
 #pragma mark- View transition
 
 - (UIImageView*)imageViewAtIndex:(NSInteger)index

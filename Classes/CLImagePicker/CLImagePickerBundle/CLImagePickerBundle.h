@@ -8,6 +8,7 @@
 #import <Foundation/Foundation.h>
 
 @class CLImageEditor;
+@class CLImageViewerController;
 @protocol CLImagePickerBundleDelegate;
 
 @interface CLImagePickerBundle : NSObject
@@ -19,6 +20,7 @@
 + (NSBundle*)bundle;
 + (UIImage*)imageNamed:(NSString*)path;
 + (CLImageEditor*)imageEditor;
++ (CLImageViewerController*)imageViewer;
 
 + (CAAnimation*)selectButtonAnimation:(BOOL)selected;
 
@@ -28,6 +30,7 @@
 @protocol CLImagePickerBundleDelegate <NSObject>
 @optional
 - (CLImageEditor*)imageEditorForImagePicker;
+- (CLImageViewerController*)imageViewerForImagePicker;
 - (CAAnimation*)selectButtonAnimation:(BOOL)selected;
 
 @end
