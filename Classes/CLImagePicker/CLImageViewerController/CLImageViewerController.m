@@ -43,6 +43,9 @@ NSString * const CLZoomingImageCellReuseIdentifier = @"ZoomingImageCell";
 {
     [super viewDidLoad];
     
+    _backgroundView.backgroundColor = self.view.backgroundColor;
+    self.view.backgroundColor = [UIColor clearColor];
+    
     [_collectionView registerClass:[CLZoomingImageCell class] forCellWithReuseIdentifier:CLZoomingImageCellReuseIdentifier];
     _collectionView.alwaysBounceHorizontal = YES;
     _collectionView.allowsMultipleSelection = YES;
@@ -62,11 +65,6 @@ NSString * const CLZoomingImageCellReuseIdentifier = @"ZoomingImageCell";
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
-}
-
-- (UIView*)backgroundView
-{
-    return _backgroundView;
 }
 
 #pragma mark- View transition
