@@ -16,7 +16,7 @@
 @property (nonatomic, weak) id<CLImagePickerManagerDelegate> delegate;
 @property (nonatomic, readonly) NSUInteger numberOfSelectedImages;
 
-+ (CLImagePickerManager*)managerWithDelegate:(UIViewController<CLImagePickerManagerDelegate>*)delegate;
++ (CLImagePickerManager*)managerWithDelegate:(id<CLImagePickerManagerDelegate>)delegate;
 
 - (UIViewController*)pickerViewController;
 

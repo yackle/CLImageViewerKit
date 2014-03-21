@@ -28,7 +28,7 @@
 
 static __weak id _sharedInstance = nil;
 
-+ (CLImagePickerManager*)managerWithDelegate:(UIViewController<CLImagePickerManagerDelegate>*)delegate;
++ (CLImagePickerManager*)managerWithDelegate:(id<CLImagePickerManagerDelegate>)delegate;
 {
     CLImagePickerManager *instance = _sharedInstance;
     if(instance==nil){
