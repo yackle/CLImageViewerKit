@@ -212,7 +212,7 @@
     if(storeMemoryCache){
         [_memoryCache setObject:data forKey:hash];
     }
-    [data writeToFile:[self _pathForHash:hash] atomically:NO];
+    [data writeToFile:[self _pathForHash:hash] atomically:YES];
 }
 
 - (NSData*)localCachedDataWithURL:(NSURL*)url
