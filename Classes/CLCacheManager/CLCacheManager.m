@@ -55,7 +55,7 @@
 + (CLCacheManager*)managerWithIdentifier:(NSString*)identifier
 {
     static NSMapTable *managerPool = nil;
-    if(managerPool==nil){ managerPool = [NSMapTable new]; }
+    if(managerPool==nil){ managerPool = [NSMapTable strongToWeakObjectsMapTable]; }
     
     CLCacheManager *manager = [managerPool objectForKey:identifier];
     if(manager==nil){
