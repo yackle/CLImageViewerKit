@@ -54,7 +54,16 @@
 
 + (CLCacheManager*)managerWithIdentifier:(NSString*)identifier
 {
-    return [[CLCacheManager alloc] initWithIdentifier:identifier];
+    static NSMapTable *managerPool = nil;
+    if(managerPool==nil){ managerPool = [NSMapTable new]; }
+    
+    CLCacheManager *manager = [managerPool objectForKey:identifier];
+    if(manager==nil){
+        manager = [[CLCacheManager alloc] initWithIdentifier:identifier];
+        [managerPool setObject:manager forKey:identifier];
+    }
+    
+    return manager;
 }
 
 - (id)init
