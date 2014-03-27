@@ -24,5 +24,6 @@
 - (UIImage*)maskedImage:(UIImage*)maskImage;
 
 - (UIImage*)gaussBlur:(CGFloat)blurLevel;       //  {blurLevel | 0 ≤ t ≤ 1}
+- (UIImage*)boxBlur:(CGFloat)blurLevel;
 
 @end
