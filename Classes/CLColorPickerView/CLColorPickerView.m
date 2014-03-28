@@ -21,6 +21,7 @@
 - (CGFloat)brightness;
 - (UIColor*)color;
 - (void)setColor:(UIColor*)color;
+- (void)setColorWithHue:(CGFloat)hue saturation:(CGFloat)saturation brightness:(CGFloat)brightness alpha:(CGFloat)alpha;
 - (void)setColorSaturation:(CGFloat)saturation;
 - (void)setColorAlpha:(CGFloat)alpha;
 @end
@@ -124,6 +125,14 @@
     }
     
     _hueCircle.color = color;
+}
+
+- (void)setColorWithHue:(CGFloat)hue saturation:(CGFloat)saturation brightness:(CGFloat)brightness alpha:(CGFloat)alpha
+{
+    _saturationSlider.value = (brightness==0) ? 1 :saturation;
+    _alphaSlider.value = alpha;
+    
+    [_hueCircle setColorWithHue:hue saturation:saturation brightness:brightness alpha:alpha];
 }
 
 - (UIColor*)color
@@ -369,25 +378,25 @@
     CGFloat H, S, B, A;
     
     if([color getHue:&H saturation:&S brightness:&B alpha:&A]){
-        _saturation = (B==0) ? 1 : S;
-        _alpha = A;
-        
-        CGFloat theta = H * 2 * M_PI;
-        CGFloat R = self.circleRadius * B;
-        
-        _circleView.center = CGPointMake(R*cosf(theta) + self.center.x, R*sinf(theta) + self.center.y);
-        [self colorStateDidChange];
+        [self setColorWithHue:H saturation:S brightness:B alpha:A];
     }
     else if([color getWhite:&S alpha:&A]){
-        _saturation = (S==0) ? 1 : S;
-        _alpha = A;
-        
-        CGFloat R = self.circleRadius * S;
-        
-        _circleView.center = CGPointMake(self.center.x + R, self.center.y);
-        [self colorStateDidChange];
+        [self setColorWithHue:0 saturation:S brightness:S alpha:A];
     }
     [self setNeedsDisplay];
+}
+
+- (void)setColorWithHue:(CGFloat)hue saturation:(CGFloat)saturation brightness:(CGFloat)brightness alpha:(CGFloat)alpha
+{
+    _saturation = (brightness==0) ? 1 : saturation;
+    _alpha = alpha;
+    
+    CGFloat theta = hue * 2 * M_PI;
+    CGFloat R = self.circleRadius * brightness;
+    
+    _circleView.center = CGPointMake(R*cosf(theta) + self.center.x, R*sinf(theta) + self.center.y);
+    
+    [self colorStateDidChange];
 }
 
 - (void)setColorSaturation:(CGFloat)saturation

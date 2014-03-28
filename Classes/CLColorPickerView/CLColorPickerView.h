@@ -19,6 +19,8 @@
 @property (nonatomic, readonly) CGFloat brightness;
 @property (nonatomic, readonly) CGFloat alpha;
 
+- (void)setColorWithHue:(CGFloat)hue saturation:(CGFloat)saturation brightness:(CGFloat)brightness alpha:(CGFloat)alpha;
+
 @end
 
 
