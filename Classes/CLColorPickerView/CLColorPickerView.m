@@ -131,6 +131,26 @@
     return _hueCircle.color;
 }
 
+- (CGFloat)hue
+{
+    return _hueCircle.hue;
+}
+
+- (CGFloat)saturation
+{
+    return _saturationSlider.value;
+}
+
+- (CGFloat)brightness
+{
+    return _hueCircle.brightness;
+}
+
+- (CGFloat)alpha
+{
+    return _alphaSlider.value;
+}
+
 - (void)setSaturationSliderColor
 {
     _saturationSlider.backgroundColor = [UIColor colorWithPatternImage:[self saturationSliderBackground]];
