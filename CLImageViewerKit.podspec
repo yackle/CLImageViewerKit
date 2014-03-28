@@ -87,7 +87,7 @@ Pod::Spec.new do |s|
     a.dependency 'CLImageViewerKit/UIImageUtility'
     a.dependency 'CLImageViewerKit/CLZoomingImageView'
     a.dependency 'CLImageViewerKit/CLCacheManager'
-    a.dependency 'CLImageEditor'
+    a.dependency 'CLImageEditor', :git => 'https://github.com/yackle/CLImageEditor', :branch => "master"
   end
   
 end
