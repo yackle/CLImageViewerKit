@@ -54,15 +54,17 @@
 
 - (void)load
 {
-    if(self.useLocalCache){
-        UIImage *img = [CLCacheManager imageWithURL:self.url storeMemoryCache:YES];
-        if(img){
-            [super setImage:img forURL:self.url];
-            return;
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        if(self.useLocalCache){
+            UIImage *img = [CLCacheManager imageWithURL:self.url storeMemoryCache:YES];
+            if(img){
+                [super setImage:img forURL:self.url];
+                return;
+            }
         }
-    }
-    
-    [super load];
+        
+        [super load];
+    });
 }
 
 - (void)loadWithCompletionBlock:(void(^)(UIImage *image, NSURL *url, NSError *error))handler
@@ -93,7 +95,9 @@
     [super setImage:image forURL:url];
     
     if(self.useLocalCache){
-        [CLCacheManager storeMemoryCacheWithImage:image forURL:url];
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            [CLCacheManager storeMemoryCacheWithImage:image forURL:url];
+        });
     }
 }
 
