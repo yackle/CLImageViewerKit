@@ -84,7 +84,7 @@
 
 - (UIImage*)didFinishDownloadWithData:(NSData *)data forURL:(NSURL *)url error:(NSError *)error
 {
-    if(self.useLocalCache){
+    if(self.useLocalCache && error==nil){
         [CLCacheManager storeData:data forURL:url storeMemoryCache:NO];
     }
     return [super didFinishDownloadWithData:data forURL:url error:error];

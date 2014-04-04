@@ -93,17 +93,23 @@ static id _sharedInstance = nil;
 
 - (void)downloadFromURL:(NSURL*)url completion:(void(^)(NSData *data, NSURL *url, NSError *error))completionBlock
 {
-    NSMutableArray *blocks = _completionBlocks[url];
-    if(blocks==nil){
-        blocks = @[[completionBlock copy]].mutableCopy;
-        _completionBlocks[url] = blocks;
+    if(url.absoluteString.length>0){
+        NSMutableArray *blocks = _completionBlocks[url];
         
-        [self.class dataWithContentsOfURL:url completionBlock:^(NSURL *url, NSData *data, NSError *error) {
-            [self didFinishedDownloadWithData:data url:url error:error];
-        }];
+        if(blocks==nil){
+            blocks = @[[completionBlock copy]].mutableCopy;
+            _completionBlocks[url] = blocks;
+            
+            [self.class dataWithContentsOfURL:url completionBlock:^(NSURL *url, NSData *data, NSError *error) {
+                [self didFinishedDownloadWithData:data url:url error:error];
+            }];
+        }
+        else{
+            [blocks addObject:[completionBlock copy]];
+        }
     }
     else{
-        [blocks addObject:[completionBlock copy]];
+        completionBlock(nil, url, [NSError errorWithDomain:@"jp.calaculu.CLDowonloadManagerErrorDomain" code:0 userInfo:@{NSLocalizedDescriptionKey:@"[CLDowonloadManager]: URL must not be nill."}]);
     }
 }
 
