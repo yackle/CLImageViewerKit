@@ -61,16 +61,17 @@
             return;
         }
     }
+    
     [super load];
 }
 
-- (void)loadWithURL:(NSURL *)url completionBlock:(void (^)(UIImage *, NSURL *, NSError *))handler
+- (void)loadWithCompletionBlock:(void(^)(UIImage *image, NSURL *url, NSError *error))handler
 {
     self.loadingState = UIImageViewURLDownloadStateNowLoading;
     
     [self showLoadingView];
     
-    [CLDownloadManager downloadFromURL:url completion:^(NSData *data, NSURL *url, NSError *error) {
+    [CLDownloadManager downloadFromURL:self.url completion:^(NSData *data, NSURL *url, NSError *error) {
         UIImage *image = [self didFinishDownloadWithData:data forURL:url error:error];
         
         if(handler){

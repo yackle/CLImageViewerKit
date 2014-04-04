@@ -39,6 +39,7 @@ typedef NS_ENUM(NSUInteger, UIImageViewURLDownloadState)
 // Download
 - (void)setUrl:(NSURL *)url autoLoading:(BOOL)autoLoading;
 - (void)load;
+- (void)loadWithCompletionBlock:(void(^)(UIImage *image, NSURL *url, NSError *error))handler;
 - (void)loadWithURL:(NSURL *)url;
 - (void)loadWithURL:(NSURL*)url completionBlock:(void(^)(UIImage *image, NSURL *url, NSError *error))handler;
 //- (void)setImage:(UIImage *)image forURL:(NSURL*)url;

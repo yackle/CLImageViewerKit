@@ -96,6 +96,7 @@ static id _sharedInstance = nil;
     NSMutableArray *blocks = _completionBlocks[url];
     if(blocks==nil){
         blocks = @[[completionBlock copy]].mutableCopy;
+        _completionBlocks[url] = blocks;
         
         [self.class dataWithContentsOfURL:url completionBlock:^(NSURL *url, NSData *data, NSError *error) {
             [self didFinishedDownloadWithData:data url:url error:error];
