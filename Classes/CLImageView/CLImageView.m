@@ -8,12 +8,15 @@
 #import "CLImageView.h"
 
 #import "CLCacheManager.h"
-
+#import "CLDownloadManager.h"
 
 
 #pragma mark- UIImageView+URLDownload's private methods
 
 @interface UIImageView (URLDownloadPrivate)
+- (void)setLoadingState:(UIImageViewURLDownloadState)loadingState;
+- (void)showLoadingView;
+
 - (UIImage*)didFinishDownloadWithData:(NSData*)data forURL:(NSURL*)url error:(NSError*)error;
 - (void)setImage:(UIImage *)image forURL:(NSURL *)url;
 @end
@@ -59,6 +62,21 @@
         }
     }
     [super load];
+}
+
+- (void)loadWithURL:(NSURL *)url completionBlock:(void (^)(UIImage *, NSURL *, NSError *))handler
+{
+    self.loadingState = UIImageViewURLDownloadStateNowLoading;
+    
+    [self showLoadingView];
+    
+    [CLDownloadManager downloadFromURL:url completion:^(NSData *data, NSURL *url, NSError *error) {
+        UIImage *image = [self didFinishDownloadWithData:data forURL:url error:error];
+        
+        if(handler){
+            handler(image, url, error);
+        }
+    }];
 }
 
 - (UIImage*)didFinishDownloadWithData:(NSData *)data forURL:(NSURL *)url error:(NSError *)error
