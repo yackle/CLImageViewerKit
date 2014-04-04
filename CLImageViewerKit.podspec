@@ -53,10 +53,14 @@ Pod::Spec.new do |s|
     a.source_files = 'Classes/CLCacheManager/*.{h,m}'
     a.dependency 'CLImageViewerKit/UIImageUtility'
   end
+  s.subspec 'CLDownloadManager' do |a|
+    a.source_files = 'Classes/CLDownloadManager/*.{h,m}'
+  end
   s.subspec 'CLImageView' do |a|
     a.source_files = 'Classes/CLImageView/*.{h,m}'
     a.dependency 'CLImageViewerKit/UIImageViewURLDownload'
     a.dependency 'CLImageViewerKit/CLCacheManager'
+    a.dependency 'CLImageViewerKit/CLDownloadManager'
   end
   
   
