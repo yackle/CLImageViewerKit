@@ -72,7 +72,9 @@
 - (void)setImage:(UIImage *)image forURL:(NSURL *)url
 {
     [super setImage:image forURL:url];
-    [CLCacheManager storeMemoryCacheWithImage:image forURL:url];
+    if(self.useLocalCache){
+        [CLCacheManager storeMemoryCacheWithImage:image forURL:url];
+    }
 }
 
 @end
