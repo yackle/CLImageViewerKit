@@ -105,7 +105,9 @@ static id _sharedInstance = nil;
             }];
         }
         else{
-            [blocks addObject:[completionBlock copy]];
+            @synchronized(blocks){
+                [blocks addObject:[completionBlock copy]];
+            }
         }
     }
     else{
@@ -117,8 +119,10 @@ static id _sharedInstance = nil;
 {
     NSMutableArray *blocks = _completionBlocks[url];
     
-    for(CLDownloadCompletionBlock block in blocks){
-        block(data, url, error);
+    @synchronized(blocks){
+        for(CLDownloadCompletionBlock block in blocks){
+            block(data, url, error);
+        }
     }
     [_completionBlocks removeObjectForKey:url];
 }
