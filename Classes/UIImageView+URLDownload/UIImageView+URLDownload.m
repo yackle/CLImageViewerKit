@@ -210,7 +210,7 @@ const char* const kCLLoadingViewKey   = "CL_URLDownload_LoadingViewKey";
             self.loadingState = UIImageViewURLDownloadStateFailed;
         }
         else{
-            [self performSelectorOnMainThread:@selector(setImage:) withObject:image waitUntilDone:NO];
+            [self performSelectorOnMainThread:@selector(setImage:) withObject:image waitUntilDone:YES];
             self.loadingState = UIImageViewURLDownloadStateLoaded;
         }
         [self hideLoadingView];
@@ -221,7 +221,7 @@ const char* const kCLLoadingViewKey   = "CL_URLDownload_LoadingViewKey";
 -(void)setImage:(UIImage *)image forURL:(NSURL *)url
 {
     if([url isEqual:self.url]){
-        [self performSelectorOnMainThread:@selector(setImage:) withObject:image waitUntilDone:NO];
+        [self performSelectorOnMainThread:@selector(setImage:) withObject:image waitUntilDone:YES];
         self.loadingState = UIImageViewURLDownloadStateLoaded;
         [self hideLoadingView];
     }
