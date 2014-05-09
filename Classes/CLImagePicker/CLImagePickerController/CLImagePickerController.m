@@ -168,7 +168,10 @@ NSString * const CLAddAssetCellReuseIdentifier = @"AddAssetCell";
         }
         else{
             [_collectionView performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:YES];
-            [_collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:_assets.count-1 inSection:0] atScrollPosition:UICollectionViewScrollPositionCenteredVertically animated:NO];
+            
+            if(_assets.count>0){
+                [_collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:_assets.count-1 inSection:0] atScrollPosition:UICollectionViewScrollPositionCenteredVertically animated:NO];
+            }
         }
     }];
 }
