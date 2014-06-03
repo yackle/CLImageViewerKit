@@ -124,7 +124,9 @@ const char* const kCLLoadingViewKey   = "CL_URLDownload_LoadingViewKey";
 - (void)showLoadingView
 {
     dispatch_async(dispatch_get_main_queue(), ^{
+        [self.loadingView.layer removeAllAnimations];
         self.loadingView.alpha = 1;
+        
         if([self.loadingView respondsToSelector:@selector(startAnimating)]){
             [self.loadingView performSelector:@selector(startAnimating)];
         }
@@ -134,16 +136,27 @@ const char* const kCLLoadingViewKey   = "CL_URLDownload_LoadingViewKey";
 - (void)hideLoadingView
 {
     dispatch_async(dispatch_get_main_queue(), ^{
-        [UIView animateWithDuration:0.3
-                         animations:^{
-                             self.loadingView.alpha = 0;
-                         }
-                         completion:^(BOOL finished) {
-                             if([self.loadingView respondsToSelector:@selector(stopAnimating)]){
-                                 [self.loadingView performSelector:@selector(stopAnimating)];
-                             }
-                         }
-         ];
+        [CATransaction begin];
+        [CATransaction setCompletionBlock:^{
+            CAAnimation *animation = [self.loadingView.layer animationForKey:@"fadeOut"];
+            if(animation){
+                [self.loadingView.layer removeAnimationForKey:@"fadeOut"];
+                
+                if([self.loadingView respondsToSelector:@selector(stopAnimating)]){
+                    [self.loadingView performSelector:@selector(stopAnimating)];
+                }
+            }
+        }];
+        
+        CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"opacity"];
+        animation.duration  = 0.3;
+        animation.fromValue = @(self.loadingView.alpha);
+        animation.toValue   = @(0);
+        animation.removedOnCompletion = NO;
+        
+        self.loadingView.alpha = 0;
+        [self.loadingView.layer addAnimation:animation forKey:@"fadeOut"];
+        [CATransaction commit];
     });
 }
 
