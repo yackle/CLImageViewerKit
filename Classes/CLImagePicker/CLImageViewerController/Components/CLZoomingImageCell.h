@@ -9,7 +9,7 @@
 
 @interface CLZoomingImageCell : UICollectionViewCell
 
-@property (nonatomic, strong) UIImage *thumnailImage;
+@property (nonatomic, strong) UIImage *thumbnailImage;
 @property (nonatomic, strong) UIImage *fullScreenImage;
 @property (nonatomic, readonly) UIScrollView *scrollView;
 @property (nonatomic, readonly) UIImageView *imageView;

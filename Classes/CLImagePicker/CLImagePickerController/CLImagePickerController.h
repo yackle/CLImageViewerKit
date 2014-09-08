@@ -36,7 +36,7 @@
 - (BOOL)imagePickerController:(CLImagePickerController *)picker isEdittedImageWithAssetURL:(NSURL*)url;
 
 
-- (UIImage*)imagePickerController:(CLImagePickerController *)picker thumnailImageForAssetURL:(NSURL*)url;
+- (UIImage*)imagePickerController:(CLImagePickerController *)picker thumbnailImageForAssetURL:(NSURL*)url;
 - (UIImage*)imagePickerController:(CLImagePickerController *)picker fullScreenImageForAssetURL:(NSURL*)url;
 
 - (void)imagePickerController:(CLImagePickerController *)picker didFinishPickingMediaWithSelectedAssetURLs:(NSArray*)selectedURLs;

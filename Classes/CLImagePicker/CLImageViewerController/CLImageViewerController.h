@@ -44,7 +44,7 @@
 @required
 - (NSInteger)imageViewerControllerNumberOfImages:(CLImageViewerController*)viewer;
 - (UIImage*)imageViewerController:(CLImageViewerController*)viewer originalImageAtIndex:(NSInteger)index;
-- (UIImage*)imageViewerController:(CLImageViewerController*)viewer thumnailImageAtIndex:(NSInteger)index;
+- (UIImage*)imageViewerController:(CLImageViewerController*)viewer thumbnailImageAtIndex:(NSInteger)index;
 - (UIImage*)imageViewerController:(CLImageViewerController*)viewer fullScreenImageAtIndex:(NSInteger)index;
 
 - (BOOL)imageViewerController:(CLImageViewerController*)viewer isSelectedImageAtIndex:(NSInteger)index;

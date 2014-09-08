@@ -26,12 +26,12 @@
     return [[_asset valueForProperty:ALAssetPropertyURLs] objectForKey:[[_asset defaultRepresentation] UTI]];
 }
 
-- (UIImage*)thumnail
+- (UIImage*)thumbnail
 {
     return [UIImage imageWithCGImage:[_asset thumbnail]];
 }
 
-- (UIImage*)aspectRatioThumnail
+- (UIImage*)aspectRatioThumbnail
 {
     return [UIImage imageWithCGImage:[_asset aspectRatioThumbnail]];
 }

@@ -81,9 +81,9 @@ static NSMapTable *_managerPool = nil;
 
 #pragma mark- Instance method
 
-- (UIImage*)thumnailImageAtIndex:(NSUInteger)index
+- (UIImage*)thumbnailImageAtIndex:(NSUInteger)index
 {
-    NSURL *url = [self thumnailURLAtIndex:index];
+    NSURL *url = [self thumbnailURLAtIndex:index];
     if(url){
         return [self cachedImageWithURL:url];
     }
@@ -99,15 +99,15 @@ static NSMapTable *_managerPool = nil;
     return nil;
 }
 
-- (NSURL*)thumnailURLAtIndex:(NSUInteger)index
+- (NSURL*)thumbnailURLAtIndex:(NSUInteger)index
 {
     if(index<_selectedURLs.count){
         NSURL *url = _selectedURLs[index];
-        NSURL *edittedThumnailURL = [self thumnailURLForURL:[self edittedImageURLForURL:url]];
-        if([self existsImageForURL:edittedThumnailURL]){
-            return edittedThumnailURL;
+        NSURL *edittedThumbnailURL = [self thumbnailURLForURL:[self edittedImageURLForURL:url]];
+        if([self existsImageForURL:edittedThumbnailURL]){
+            return edittedThumbnailURL;
         }
-        return [self thumnailURLForURL:url];
+        return [self thumbnailURLForURL:url];
     }
     return nil;
 }
@@ -144,13 +144,13 @@ static NSMapTable *_managerPool = nil;
 
 #pragma mark- Get Image
 
-- (UIImage*)thumnailImageForURL:(NSURL*)url
+- (UIImage*)thumbnailImageForURL:(NSURL*)url
 {
-    NSURL *edittedThumnailURL = [self thumnailURLForURL:[self edittedImageURLForURL:url]];
-    if([self existsImageForURL:edittedThumnailURL]){
-        return [self cachedImageWithURL:edittedThumnailURL];
+    NSURL *edittedThumbnailURL = [self thumbnailURLForURL:[self edittedImageURLForURL:url]];
+    if([self existsImageForURL:edittedThumbnailURL]){
+        return [self cachedImageWithURL:edittedThumbnailURL];
     }
-    return [self cachedImageWithURL:[self thumnailURLForURL:url]];
+    return [self cachedImageWithURL:[self thumbnailURLForURL:url]];
 }
 
 - (UIImage*)fullScreenImageForURL:(NSURL*)url
@@ -169,9 +169,9 @@ static NSMapTable *_managerPool = nil;
     return [NSURL URLWithString:[NSString stringWithFormat:@"%@_editted", url.absoluteString]];
 }
 
-- (NSURL*)thumnailURLForURL:(NSURL*)url
+- (NSURL*)thumbnailURLForURL:(NSURL*)url
 {
-    return [NSURL URLWithString:[NSString stringWithFormat:@"%@_thumnail", url.absoluteString]];
+    return [NSURL URLWithString:[NSString stringWithFormat:@"%@_thumbnail", url.absoluteString]];
 }
 
 - (void)storeImage:(UIImage*)image forURL:(NSURL*)url
@@ -188,17 +188,17 @@ static NSMapTable *_managerPool = nil;
 - (void)cacheImage:(UIImage*)image forURL:(NSURL*)url
 {
     CGFloat ratio = MAX(255.0/image.size.width, 255.0/image.size.height);
-    UIImage *thumnailImage = [image aspectFill:CGSizeMake(ratio*image.size.width, ratio*image.size.height)];
-    NSURL *thumnailURL = [self thumnailURLForURL:url];
+    UIImage *thumbnailImage = [image aspectFill:CGSizeMake(ratio*image.size.width, ratio*image.size.height)];
+    NSURL *thumbnailURL = [self thumbnailURLForURL:url];
     
-    [self storeImage:thumnailImage forURL:thumnailURL];
+    [self storeImage:thumbnailImage forURL:thumbnailURL];
     [self storeImage:image forURL:url];
 }
 
 - (void)removeCachedImageForURL:(NSURL*)url
 {
     [_cacheManager removeCacheForURL:url];
-    [_cacheManager removeCacheForURL:[self thumnailURLForURL:url]];
+    [_cacheManager removeCacheForURL:[self thumbnailURLForURL:url]];
 }
 
 - (UIImage*)cachedImageWithURL:(NSURL*)url
@@ -258,9 +258,9 @@ static NSMapTable *_managerPool = nil;
     return [self existsImageForURL:[self edittedImageURLForURL:url]];
 }
 
-- (UIImage*)imagePickerController:(CLImagePickerController *)picker thumnailImageForAssetURL:(NSURL*)url
+- (UIImage*)imagePickerController:(CLImagePickerController *)picker thumbnailImageForAssetURL:(NSURL*)url
 {
-    return [self thumnailImageForURL:url];
+    return [self thumbnailImageForURL:url];
 }
 
 - (UIImage*)imagePickerController:(CLImagePickerController *)picker fullScreenImageForAssetURL:(NSURL*)url
@@ -318,9 +318,9 @@ static NSMapTable *_managerPool = nil;
     return nil;
 }
 
-- (UIImage*)imageViewerController:(CLImageViewerController*)viewer thumnailImageAtIndex:(NSInteger)index
+- (UIImage*)imageViewerController:(CLImageViewerController*)viewer thumbnailImageAtIndex:(NSInteger)index
 {
-    return [self thumnailImageAtIndex:index];
+    return [self thumbnailImageAtIndex:index];
 }
 
 - (UIImage*)imageViewerController:(CLImageViewerController*)viewer fullScreenImageAtIndex:(NSInteger)index

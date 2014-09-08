@@ -401,7 +401,7 @@ NSString * const CLZoomingImageCellReuseIdentifier = @"ZoomingImageCell";
     
     if([cell isKindOfClass:[CLZoomingImageCell class]]){
         CLZoomingImageCell *_cell = (CLZoomingImageCell*)cell;
-        _cell.thumnailImage = [self.dataSource imageViewerController:self thumnailImageAtIndex:indexPath.item];
+        _cell.thumbnailImage = [self.dataSource imageViewerController:self thumbnailImageAtIndex:indexPath.item];
         
         if(_cell.scrollView.panGestureRecognizer){
             [_foregroundView addGestureRecognizer:_cell.scrollView.panGestureRecognizer];

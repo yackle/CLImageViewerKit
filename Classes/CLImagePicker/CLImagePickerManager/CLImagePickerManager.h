@@ -20,10 +20,10 @@
 
 - (UIViewController*)pickerViewController;
 
-- (UIImage*)thumnailImageAtIndex:(NSUInteger)index;
+- (UIImage*)thumbnailImageAtIndex:(NSUInteger)index;
 - (UIImage*)fullScreenImageAtIndex:(NSUInteger)index;
 
-- (NSURL*)thumnailURLAtIndex:(NSUInteger)index;
+- (NSURL*)thumbnailURLAtIndex:(NSUInteger)index;
 - (NSURL*)fullScreenURLAtIndex:(NSUInteger)index;
 
 - (void)selectImage:(UIImage*)image forURL:(NSURL*)url;

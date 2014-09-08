@@ -39,16 +39,16 @@
     return _zoomingView.isViewing;
 }
 
-- (void)setThumnailImage:(UIImage *)thumnailImage
+- (void)setThumbnailImage:(UIImage *)thumnailImage
 {
-    _thumnailImage   = thumnailImage;
+    _thumbnailImage   = thumnailImage;
     _fullScreenImage = nil;
     _zoomingView.image = thumnailImage;
 }
 
 - (void)setFullScreenImage:(UIImage *)fullScreenImage
 {
-    _thumnailImage   = nil;
+    _thumbnailImage   = nil;
     _fullScreenImage = fullScreenImage;
     _zoomingView.image = fullScreenImage;
 }

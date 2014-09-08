@@ -109,11 +109,11 @@ NSString * const CLAddAssetCellReuseIdentifier = @"AddAssetCell";
     return asset.fullScreenImage;
 }
 
-- (UIImage*)thumnailForAsset:(CLAsset*)asset aspectRatio:(BOOL)aspectRatio
+- (UIImage*)thumbnailForAsset:(CLAsset*)asset aspectRatio:(BOOL)aspectRatio
 {
-    UIImage *image = [self.delegate imagePickerController:self thumnailImageForAssetURL:asset.assetURL];
+    UIImage *image = [self.delegate imagePickerController:self thumbnailImageForAssetURL:asset.assetURL];
     if(image==nil){
-        image = (aspectRatio) ? asset.aspectRatioThumnail :asset.thumnail;
+        image = (aspectRatio) ? asset.aspectRatioThumbnail :asset.thumbnail;
     }
     return image;
 }
@@ -267,7 +267,7 @@ NSString * const CLAddAssetCellReuseIdentifier = @"AddAssetCell";
         _cell.delegate = self;
         
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-            UIImage *image = [self thumnailForAsset:asset aspectRatio:NO];
+            UIImage *image = [self thumbnailForAsset:asset aspectRatio:NO];
             dispatch_async(dispatch_get_main_queue(), ^{
                 _cell.image = image;
             });
@@ -329,7 +329,7 @@ NSString * const CLAddAssetCellReuseIdentifier = @"AddAssetCell";
     if([cell isKindOfClass:[CLAssetCell class]]){
         CLAsset *asset = [self assetAtIndex:indexPath.item];
         CLAssetCell *_cell = (CLAssetCell*)cell;
-        _cell.image = [self thumnailForAsset:asset aspectRatio:YES];
+        _cell.image = [self thumbnailForAsset:asset aspectRatio:YES];
         [self showImageViewerWithIndex:indexPath.item];
     }
     else if([cell isKindOfClass:[CLAddAssetCell class]]){
@@ -443,9 +443,9 @@ NSString * const CLAddAssetCellReuseIdentifier = @"AddAssetCell";
     return [self originalImageForAsset:[self assetAtIndex:index]];
 }
 
-- (UIImage*)imageViewerController:(CLImageViewerController*)viewer thumnailImageAtIndex:(NSInteger)index
+- (UIImage*)imageViewerController:(CLImageViewerController*)viewer thumbnailImageAtIndex:(NSInteger)index
 {
-    return [self thumnailForAsset:[self assetAtIndex:index] aspectRatio:YES];
+    return [self thumbnailForAsset:[self assetAtIndex:index] aspectRatio:YES];
 }
 
 - (UIImage*)imageViewerController:(CLImageViewerController*)viewer fullScreenImageAtIndex:(NSInteger)index
@@ -496,7 +496,7 @@ NSString * const CLAddAssetCellReuseIdentifier = @"AddAssetCell";
     
     CLAssetCell *cell = (CLAssetCell*)[_collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForItem:index inSection:0]];
     if(cell){
-        cell.image = [self thumnailForAsset:[self assetAtIndex:index] aspectRatio:NO];
+        cell.image = [self thumbnailForAsset:[self assetAtIndex:index] aspectRatio:NO];
     }
 }
 

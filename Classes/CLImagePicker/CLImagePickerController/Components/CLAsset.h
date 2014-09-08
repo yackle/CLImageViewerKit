@@ -14,8 +14,8 @@
 - (id)initWithAsset:(ALAsset*)asset;
 
 - (NSURL*)assetURL;
-- (UIImage*)thumnail;
-- (UIImage*)aspectRatioThumnail;
+- (UIImage*)thumbnail;
+- (UIImage*)aspectRatioThumbnail;
 - (UIImage*)fullScreenImage;
 
 @end

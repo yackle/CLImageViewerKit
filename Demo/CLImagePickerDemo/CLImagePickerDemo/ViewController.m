@@ -18,7 +18,7 @@
 @implementation ViewController
 {
     CLImagePickerManager *_manager;
-    NSMutableArray *_thumnails;
+    NSMutableArray *_thumbnails;
 }
 
 - (void)viewDidLoad
@@ -27,7 +27,7 @@
 	// Do any additional setup after loading the view, typically from a nib.
     
     _manager = [CLImagePickerManager managerWithDelegate:self];
-    _thumnails = [NSMutableArray array];
+    _thumbnails = [NSMutableArray array];
     
     [_manager selectImage:[UIImage imageNamed:@"default.jpg"] forURL:[NSURL URLWithString:@"test://testetestse"]];
     [_manager selectImage:nil forURL:[NSURL URLWithString:@"http://placekitten.com/1000/1000"]];
@@ -47,8 +47,8 @@
 
 - (void)resetImageViews
 {
-    for(UIView *view in _thumnails){ [view removeFromSuperview]; }
-    [_thumnails removeAllObjects];
+    for(UIView *view in _thumbnails){ [view removeFromSuperview]; }
+    [_thumbnails removeAllObjects];
     
     if(_manager.numberOfSelectedImages==0){ return; }
     
@@ -65,13 +65,13 @@
         view.tag = index;
         
         view.userInteractionEnabled = YES;
-        [view addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(thumnailDidTapped:)]];
+        [view addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(thumbnailDidTapped:)]];
         
         [self.view insertSubview:view atIndex:0];
-        [_thumnails addObject:view];
+        [_thumbnails addObject:view];
         
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-            UIImage *image = [_manager thumnailImageAtIndex:index];
+            UIImage *image = [_manager thumbnailImageAtIndex:index];
             dispatch_async(dispatch_get_main_queue(), ^{
                 view.image = image;
             });
@@ -80,7 +80,7 @@
     }
 }
 
-- (void)thumnailDidTapped:(UITapGestureRecognizer*)sender
+- (void)thumbnailDidTapped:(UITapGestureRecognizer*)sender
 {
     [_manager showImageViewerInViewController:self withIndex:sender.view.tag];
 }
@@ -103,8 +103,8 @@
 
 - (UIImageView*)imageViewerController:(CLImageViewerController*)viewer imageViewAtIndex:(NSInteger)index
 {
-    if(index<_thumnails.count){
-        return _thumnails[index];
+    if(index<_thumbnails.count){
+        return _thumbnails[index];
     }
     return nil;
 }
@@ -142,8 +142,8 @@
 
 - (BOOL)imageViewerController:(CLImageViewerController *)viewer readyToDismissWithIndex:(NSInteger)index
 {
-    if(index<_thumnails.count){
-        UIView *view = _thumnails[index];
+    if(index<_thumbnails.count){
+        UIView *view = _thumbnails[index];
         view.hidden = YES;
     }
     return YES;
@@ -151,8 +151,8 @@
 
 - (void)imageViewerController:(CLImageViewerController*)viewer didDismissWithIndex:(NSInteger)index
 {
-    if(index<_thumnails.count){
-        UIView *view = _thumnails[index];
+    if(index<_thumbnails.count){
+        UIView *view = _thumbnails[index];
         view.hidden = NO;
     }
 }
