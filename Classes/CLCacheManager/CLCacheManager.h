@@ -15,6 +15,8 @@
 + (CLCacheManager*)defaultManager;
 + (CLCacheManager*)managerWithIdentifier:(NSString*)identifier;
 
++ (NSString*)filePathForURL:(NSURL*)url;
+- (NSString*)filePathForURL:(NSURL*)url;
 
 + (void)limitNumberOfCacheFiles:(NSInteger)numberOfCacheFiles;
 - (void)limitNumberOfCacheFiles:(NSInteger)numberOfCacheFiles;

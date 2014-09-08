@@ -154,6 +154,16 @@
     return  [NSString stringWithFormat:@"%@/%@/%@", [self _cacheDirectory], [hash substringToIndex:2], hash];
 }
 
++ (NSString*)filePathForURL:(NSURL*)url
+{
+    return [self.manager filePathForURL:url];
+}
+
+- (NSString*)filePathForURL:(NSURL*)url
+{
+    return [self _pathForHash:url.absoluteString.MD5Hash];
+}
+
 #pragma mark- Caching control
 
 - (void)limitNumberOfCacheFiles:(NSInteger)numberOfCacheFiles
