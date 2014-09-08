@@ -22,48 +22,41 @@
 {
     CLCacheManager *_cacheManager;
     NSMutableOrderedSet *_selectedURLs;
+    NSString *_identifier;
 }
 
-#pragma mark- weak singleton pattern
-
-static __weak id _sharedInstance = nil;
+static NSMapTable *_managerPool = nil;
 
 + (CLImagePickerManager*)managerWithDelegate:(id<CLImagePickerManagerDelegate>)delegate;
 {
-    CLImagePickerManager *instance = _sharedInstance;
-    if(instance==nil){
-        instance = [[CLImagePickerManager alloc] init];
-    }
+    if(_managerPool==nil){ _managerPool = [NSMapTable strongToWeakObjectsMapTable]; }
     
-    _sharedInstance = instance;
+    CLImagePickerManager *instance = [[CLImagePickerManager alloc] init];
     instance.delegate = delegate;
+    
+    [_managerPool setObject:instance forKey:instance.identifier];
     
     return instance;
 }
 
-+ (id)allocWithZone:(NSZone *)zone
++ (NSString*)availableIdentifier
 {
-    @synchronized(self) {
-        id instance = _sharedInstance;
-        if (instance == nil) {
-            instance = [super allocWithZone:zone];
-            _sharedInstance = instance;
-            return _sharedInstance;
-        }
+    NSInteger i = 0;
+    NSString *key = [NSString stringWithFormat:@"%@%ld", NSStringFromClass(self.class), i];
+    
+    while ([_managerPool objectForKey:key]!=nil) {
+        ++i;
+        key = [NSString stringWithFormat:@"%@%ld", NSStringFromClass(self.class), i];
     }
-    return nil;
-}
-
-- (id)copyWithZone:(NSZone *)zone
-{
-    return self;
+    return key;
 }
 
 - (id)init
 {
     self = [super init];
     if(self){
-        _cacheManager = [CLCacheManager managerWithIdentifier:NSStringFromClass(self.class)];
+        _identifier = [self.class availableIdentifier];
+        _cacheManager = [CLCacheManager managerWithIdentifier:_identifier];
         [_cacheManager removeCacheDirectory];
         
         _selectedURLs = [NSMutableOrderedSet new];
@@ -79,6 +72,11 @@ static __weak id _sharedInstance = nil;
 - (NSUInteger)numberOfSelectedImages
 {
     return _selectedURLs.count;
+}
+
+- (NSString*)identifier
+{
+    return _identifier;
 }
 
 #pragma mark- Instance method
