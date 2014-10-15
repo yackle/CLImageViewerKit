@@ -112,6 +112,8 @@ NSString * const CLZoomingImageCellReuseIdentifier = @"ZoomingImageCell";
     self.view.frame = view.bounds;
     [view addSubview:self.view];
     
+    _collectionView.collectionViewLayout = [[CLImageViewerLayout alloc] initWithCellSize:self.view.frame.size];
+    
     [_collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:index inSection:0] atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally animated:NO];
     self.currentPageIndex = index;
     
