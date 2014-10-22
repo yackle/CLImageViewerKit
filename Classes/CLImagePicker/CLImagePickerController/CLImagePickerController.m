@@ -169,8 +169,8 @@ NSString * const CLAddAssetCellReuseIdentifier = @"AddAssetCell";
         else{
             dispatch_async(dispatch_get_main_queue(), ^{
                 [_collectionView reloadData];
-                
                 if(_assets.count>0){
+                    [_collectionView layoutIfNeeded];
                     [_collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:_assets.count-1 inSection:0] atScrollPosition:UICollectionViewScrollPositionCenteredVertically animated:NO];
                 }
             });
