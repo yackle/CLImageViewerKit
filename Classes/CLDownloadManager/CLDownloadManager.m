@@ -96,7 +96,7 @@ static id _sharedInstance = nil;
 - (void)downloadFromURL:(NSURL*)url completion:(void(^)(NSData *data, NSURL *url, NSError *error))completionBlock
 {
     if(url.absoluteString.length>0){
-        NSString *urlHash = url.absoluteString.MD5Hash;
+        id urlHash = url.absoluteString.MD5Hash;
         NSMutableArray *blocks = _completionBlocks[urlHash];
         
         if(blocks==nil){
@@ -120,14 +120,15 @@ static id _sharedInstance = nil;
 
 - (void)didFinishedDownloadWithData:(NSData*)data url:(NSURL*)url error:(NSError*)error
 {
-    NSMutableArray *blocks = _completionBlocks[url.absoluteString.MD5Hash];
+    id urlHash = url.absoluteString.MD5Hash;
+    NSMutableArray *blocks = _completionBlocks[urlHash];
     
     @synchronized(blocks){
         for(CLDownloadCompletionBlock block in blocks){
             block(data, url, error);
         }
     }
-    [_completionBlocks removeObjectForKey:url];
+    [_completionBlocks removeObjectForKey:urlHash];
 }
 
 @end
