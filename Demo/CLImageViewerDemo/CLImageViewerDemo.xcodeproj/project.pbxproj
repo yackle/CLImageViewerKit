@@ -11,6 +11,7 @@
 		AD066F9A184356E8000CDD54 /* CLCacheManager.m in Sources */ = {isa = PBXBuildFile; fileRef = AD066F99184356E8000CDD54 /* CLCacheManager.m */; };
 		AD066FA2184375BD000CDD54 /* CLImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = AD066FA1184375BD000CDD54 /* CLImageView.m */; };
 		AD42D6EA18EE605F00A8DBB2 /* CLDownloadManager.m in Sources */ = {isa = PBXBuildFile; fileRef = AD42D6E918EE605F00A8DBB2 /* CLDownloadManager.m */; };
+		ADA1D9841A40130000459928 /* NSString+MD5Hash.m in Sources */ = {isa = PBXBuildFile; fileRef = ADA1D9831A40130000459928 /* NSString+MD5Hash.m */; };
 		ADBB8E0218556ADF00B9522F /* UIView+Frame.m in Sources */ = {isa = PBXBuildFile; fileRef = ADBB8E0118556ADF00B9522F /* UIView+Frame.m */; };
 		ADBB8E0618556AE700B9522F /* UIImage+Utility.m in Sources */ = {isa = PBXBuildFile; fileRef = ADBB8E0518556AE700B9522F /* UIImage+Utility.m */; };
 		ADED86F218423C3200CF7EAC /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ADED86F118423C3200CF7EAC /* Foundation.framework */; };
@@ -52,6 +53,8 @@
 		AD066FA1184375BD000CDD54 /* CLImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CLImageView.m; path = CLImageView/CLImageView.m; sourceTree = "<group>"; };
 		AD42D6E818EE605F00A8DBB2 /* CLDownloadManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CLDownloadManager.h; path = CLDownloadManager/CLDownloadManager.h; sourceTree = "<group>"; };
 		AD42D6E918EE605F00A8DBB2 /* CLDownloadManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CLDownloadManager.m; path = CLDownloadManager/CLDownloadManager.m; sourceTree = "<group>"; };
+		ADA1D9821A40130000459928 /* NSString+MD5Hash.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+MD5Hash.h"; sourceTree = "<group>"; };
+		ADA1D9831A40130000459928 /* NSString+MD5Hash.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+MD5Hash.m"; sourceTree = "<group>"; };
 		ADBB8E0018556ADF00B9522F /* UIView+Frame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Frame.h"; sourceTree = "<group>"; };
 		ADBB8E0118556ADF00B9522F /* UIView+Frame.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Frame.m"; sourceTree = "<group>"; };
 		ADBB8E0418556AE700B9522F /* UIImage+Utility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Utility.h"; sourceTree = "<group>"; };
@@ -143,6 +146,15 @@
 				AD42D6E918EE605F00A8DBB2 /* CLDownloadManager.m */,
 			);
 			name = CLDownloadManager;
+			sourceTree = "<group>";
+		};
+		ADA1D9811A4012CE00459928 /* NSString+MD5Hash */ = {
+			isa = PBXGroup;
+			children = (
+				ADA1D9821A40130000459928 /* NSString+MD5Hash.h */,
+				ADA1D9831A40130000459928 /* NSString+MD5Hash.m */,
+			);
+			path = "NSString+MD5Hash";
 			sourceTree = "<group>";
 		};
 		ADBB8DFF18556ADF00B9522F /* UIView+Frame */ = {
@@ -240,6 +252,7 @@
 		ADFFD35A18423E7C00D1712E /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				ADA1D9811A4012CE00459928 /* NSString+MD5Hash */,
 				ADBB8E0318556AE700B9522F /* UIImage+Utility */,
 				ADBB8DFF18556ADF00B9522F /* UIView+Frame */,
 				AD066F97184356C6000CDD54 /* CLCacheManager */,
@@ -400,6 +413,7 @@
 				ADFFD36A18423E7C00D1712E /* UIImage+Placeholder.m in Sources */,
 				AD066F901842EDA5000CDD54 /* UIImageView+URLDownload.m in Sources */,
 				ADFFD36918423E7C00D1712E /* CLZoomingImageView.m in Sources */,
+				ADA1D9841A40130000459928 /* NSString+MD5Hash.m in Sources */,
 				ADBB8E0218556ADF00B9522F /* UIView+Frame.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

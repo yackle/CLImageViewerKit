@@ -29,6 +29,9 @@ Pod::Spec.new do |s|
   s.subspec 'UIColorPatterns' do |a|
     a.source_files = 'Classes/UIColor+Patterns/*.{h,m}'
   end
+  s.subspec 'NSStringMD5Hash' do |a|
+    a.source_files = 'Classes/NSString+MD5Hash/*.{h,m}'
+  end
   
   
   
@@ -52,9 +55,11 @@ Pod::Spec.new do |s|
   s.subspec 'CLCacheManager' do |a|
     a.source_files = 'Classes/CLCacheManager/*.{h,m}'
     a.dependency 'CLImageViewerKit/UIImageUtility'
+    a.dependency 'CLImageViewerKit/NSStringMD5Hash'
   end
   s.subspec 'CLDownloadManager' do |a|
     a.source_files = 'Classes/CLDownloadManager/*.{h,m}'
+    a.dependency 'CLImageViewerKit/NSStringMD5Hash'
   end
   s.subspec 'CLImageView' do |a|
     a.source_files = 'Classes/CLImageView/*.{h,m}'

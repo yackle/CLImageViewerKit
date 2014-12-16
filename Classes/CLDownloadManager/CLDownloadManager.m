@@ -8,6 +8,8 @@
 
 #import "CLDownloadManager.h"
 
+#import "NSString+MD5Hash.h"
+
 typedef void (^CLDownloadCompletionBlock)(NSData *data, NSURL *url, NSError *error);
 
 @implementation CLDownloadManager
@@ -94,11 +96,12 @@ static id _sharedInstance = nil;
 - (void)downloadFromURL:(NSURL*)url completion:(void(^)(NSData *data, NSURL *url, NSError *error))completionBlock
 {
     if(url.absoluteString.length>0){
-        NSMutableArray *blocks = _completionBlocks[url];
+        NSString *urlHash = url.absoluteString.MD5Hash;
+        NSMutableArray *blocks = _completionBlocks[urlHash];
         
         if(blocks==nil){
             blocks = @[[completionBlock copy]].mutableCopy;
-            _completionBlocks[url] = blocks;
+            _completionBlocks[urlHash] = blocks;
             
             [self.class dataWithContentsOfURL:url completionBlock:^(NSURL *url, NSData *data, NSError *error) {
                 [self didFinishedDownloadWithData:data url:url error:error];
@@ -117,7 +120,7 @@ static id _sharedInstance = nil;
 
 - (void)didFinishedDownloadWithData:(NSData*)data url:(NSURL*)url error:(NSError*)error
 {
-    NSMutableArray *blocks = _completionBlocks[url];
+    NSMutableArray *blocks = _completionBlocks[url.absoluteString.MD5Hash];
     
     @synchronized(blocks){
         for(CLDownloadCompletionBlock block in blocks){
