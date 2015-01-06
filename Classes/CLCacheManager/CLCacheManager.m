@@ -21,6 +21,7 @@
 
 @interface CLCacheManager()
 @property (nonatomic, strong) NSString *identifier;
+@property (nonatomic, assign) BOOL isPermanent;
 @end
 
 @implementation CLCacheManager
@@ -42,19 +43,24 @@
     static dispatch_once_t  onceToken;
     
     dispatch_once(&onceToken, ^{
-        _sharedInstance = [[CLCacheManager alloc] initWithIdentifier:NSStringFromClass(self)];
+        _sharedInstance = [[CLCacheManager alloc] initWithIdentifier:NSStringFromClass(self) permanent:NO];
     });
     return _sharedInstance;
 }
 
 + (CLCacheManager*)managerWithIdentifier:(NSString*)identifier
 {
+    return [self managerWithIdentifier:identifier permanent:NO];
+}
+
++ (CLCacheManager*)managerWithIdentifier:(NSString*)identifier permanent:(BOOL)permanent
+{
     static NSMapTable *managerPool = nil;
     if(managerPool==nil){ managerPool = [NSMapTable strongToWeakObjectsMapTable]; }
     
     CLCacheManager *manager = [managerPool objectForKey:identifier];
     if(manager==nil){
-        manager = [[CLCacheManager alloc] initWithIdentifier:identifier];
+        manager = [[CLCacheManager alloc] initWithIdentifier:identifier permanent:permanent];
         [managerPool setObject:manager forKey:identifier];
     }
     
@@ -66,7 +72,7 @@
     return self.class.manager;
 }
 
-- (id)initWithIdentifier:(NSString*)identifier
+- (id)initWithIdentifier:(NSString*)identifier permanent:(BOOL)permanent
 {
     if(identifier.length<=0){
         return self.class.manager;
@@ -76,6 +82,7 @@
     if(self) {
         _memoryCache = [NSCache new];
         _memoryCache.countLimit = 50;
+        _isPermanent = permanent;
         self.identifier = identifier;
     }
     return self;
@@ -114,7 +121,7 @@
 - (NSString*)_cacheDirectory
 {
     if(_cacheDirectoryPath==nil){
-        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
+        NSArray *paths = NSSearchPathForDirectoriesInDomains(((self.isPermanent) ? NSDocumentDirectory : NSCachesDirectory), NSUserDomainMask, YES);
         _cacheDirectoryPath = [paths.lastObject stringByAppendingPathComponent:self.identifier.MD5Hash];
         [self.class _checkWorkspace:_cacheDirectoryPath];
     }

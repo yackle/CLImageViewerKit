@@ -14,6 +14,7 @@
 
 + (CLCacheManager*)defaultManager;
 + (CLCacheManager*)managerWithIdentifier:(NSString*)identifier;
++ (CLCacheManager*)managerWithIdentifier:(NSString*)identifier permanent:(BOOL)permanent;
 
 + (NSString*)filePathForURL:(NSURL*)url;
 - (NSString*)filePathForURL:(NSURL*)url;
